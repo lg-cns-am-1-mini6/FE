@@ -1,0 +1,21 @@
+.basic-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.basic-title {
+  font-size: 3rem;
+}
+
+.basic-hashtags {
+  margin: 5px 0;
+  color: grey;
+  font-size: 1.2rem;
+}
+
+.basic-hashtags p {
+  margin: 3px;
+}
