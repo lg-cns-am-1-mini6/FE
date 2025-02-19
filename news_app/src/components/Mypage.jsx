@@ -35,7 +35,6 @@ export default function Mypage() {
         <p>{username}님, 안녕하세요</p>
       </header>
       <br></br>
-
       <div className="keyword-box">
         <h3>관심 키워드 목록</h3>
         <div>
