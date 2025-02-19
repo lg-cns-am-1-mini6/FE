@@ -1,17 +1,14 @@
-import { useState } from 'react'
-import './App.css'
+import React from "react";
+import Header from "./components/Header.jsx";
+import NewsSearch from "./components/NewsSearch.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        안녕 예인님
-      </div>
-     
-    </>
-  )
+    <div>
+      <Header />
+      <NewsSearch />
+    </div>
+  );
 }
 
-export default App
+export default App;
