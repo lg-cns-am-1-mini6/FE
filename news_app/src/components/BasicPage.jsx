@@ -32,7 +32,9 @@ export default function BasicPage() {
               <p>#예시_키워드 #예시_키워드 #예시_키워드</p>
             </>
           )}
-          <button onClick={() => setLogin(!login)}>로그인 테스트</button>
+          <button onClick={() => setLogin(!login)}>
+            로그인 여부 토글 (테스트용)
+          </button>
         </div>
       </div>
     </div>

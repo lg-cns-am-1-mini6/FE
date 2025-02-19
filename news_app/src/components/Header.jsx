@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">(LOGO)</div>
-      <nav>
+      <nav className="header-btn">
         <a href="/mypage">MYPAGE</a>
         <button className="logout-btn">Logout</button>
       </nav>

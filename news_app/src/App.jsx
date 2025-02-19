@@ -4,15 +4,16 @@ import NewsSearch from "./components/NewsSearch.jsx";
 import Login from "./components/Login.jsx";
 import BasicPage from "./components/basicPage.jsx";
 import Mypage from "./components/Mypage.jsx";
+import "./App.css";
 
 function App() {
   return (
-    <div>
+    <div className="app-contents">
       <Header />
+      {/* <Mypage /> */}
       {/* {<NewsSearch />} */}
-      {/* <BasicPage /> */}
+      <BasicPage />
       {/* {<Login />} */}
-      <Mypage />
     </div>
   );
 }
