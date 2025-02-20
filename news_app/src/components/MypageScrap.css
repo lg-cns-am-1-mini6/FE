@@ -1,0 +1,119 @@
+/* 헤더 스타일 (Mypage와 동일) */
+.mypage-header {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .mypage-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .mypage-header p {
+    color: #666;
+  }
+  
+  /* 타이틀 영역 */
+  .text-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  .horizonalBar {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+  }
+  
+  /* 스크랩 기사 카드 리스트 */
+  .card-list {
+    width: 50%;
+    margin: auto;
+  }
+  
+  /* 카드 스타일 */
+  .card-box {
+    position: relative; /* 삭제버튼 위치를 위한 relative 설정 */
+    background-color: #e8edf7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .card-box h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .card-box a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .card-box p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* 카드 우측 상단 삭제 버튼 */
+  .card-delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* "맞춤 추천 기사 보러 가기" 버튼 스타일 */
+  .custom-btn-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .custom-btn {
+    padding: 16px 32px; 
+    background-color: #e8edf7;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* 하단 원래대로 / 수정사항 저장 버튼 */
+  .keyword-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .keyword-buttons button {
+    padding: 8px 12px;
+    margin-left: 8px;
+    border: none;
+    border-radius: 40px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .keyword-buttons button:first-child {
+    background-color: #e0e0e0;
+  }
+  
+  .keyword-buttons button:last-child {
+    background-color: #465fbf;
+    color: white;
+  }
+  
