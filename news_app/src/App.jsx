@@ -6,6 +6,8 @@ import Login from "./components/Login.jsx";
 import BasicPage from "./components/basicPage.jsx";
 import Mypage from "./components/Mypage.jsx";
 import "./App.css";
+import MypageProfile from "./components/MypageProfile.jsx";
+import MypageKeyword from "./components/MypageKeyword.jsx";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/Mypage" element={<Mypage />} />
           <Route path="/NewsSearch" element={<NewsSearch />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/MypageProfile" element={<MypageProfile />} />
+          <Route path="/MypageKeyword" element={<MypageKeyword />} />
         </Routes>
       </div>
     </Router>
