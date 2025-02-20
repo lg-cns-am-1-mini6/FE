@@ -28,3 +28,7 @@
 .header-btn {
   padding-right: 3rem;
 }
+
+.header :visited {
+  color: white;
+}

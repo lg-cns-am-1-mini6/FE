@@ -1,6 +1,14 @@
 import "./Login.css";
 
 export default function Login() {
+  const googleLogin = () => {
+    console.log("구글 로그인");
+  };
+
+  const kakaoLogin = () => {
+    console.log("카카오 로그인");
+  };
+
   return (
     <>
       <div className="login-container">
@@ -12,8 +20,8 @@ export default function Login() {
           </div>
           <br></br>
           <div className="login-buttons">
-            <button>카카오 계정 로그인</button>
-            <button>구글 계정 로그인</button>
+            <button onClick={kakaoLogin}>카카오 계정 로그인</button>
+            <button onClick={googleLogin}>구글 계정 로그인</button>
           </div>
         </div>
       </div>
