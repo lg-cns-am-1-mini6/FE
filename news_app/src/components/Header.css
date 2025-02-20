@@ -30,5 +30,29 @@
 }
 
 .header :visited {
-  color: white;
+  color: #f4fcff;
+}
+
+.menu-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: fixed;
+  top: 70px;
+  right: 0px;
+  background-color: #21527e;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  min-width: 10rem;
+}
+
+.dropdown-menu li {
+  padding: 8px 20px;
+}
+.dropdown-menu li:hover {
+  background-color: rgb(70, 57, 145);
 }
