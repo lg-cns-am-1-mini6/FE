@@ -5,6 +5,11 @@ export default function BasicPage() {
   const [username, setUsername] = useState("hong");
   const [login, setLogin] = useState(false);
   const [query, setQuery] = useState("");
+  const [hashtags, setHashtags] = useState([
+    "예시키워드",
+    "예시키워드",
+    "예시키워드",
+  ]);
 
   return (
     <div className="basic-page">
@@ -29,7 +34,11 @@ export default function BasicPage() {
           {login && (
             <>
               <p>{username}님은 이런 검색어를 #가장_많이 찾아보셨어요!</p>
-              <p>#예시_키워드 #예시_키워드 #예시_키워드</p>
+              <p>
+                {hashtags.map((tag, i) => (
+                  <span>#{tag} </span>
+                ))}
+              </p>
             </>
           )}
           <button onClick={() => setLogin(!login)}>
