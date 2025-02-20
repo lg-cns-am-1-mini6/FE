@@ -9,7 +9,7 @@ export default function BasicPage() {
   return (
     <div className="basic-page">
       <div className="news-container">
-        <h1 className="basic-title">AI News System</h1>
+        <h1 className="basic-title">NEWjeanS</h1>
         <div className="search-box">
           <input
             type="text"
