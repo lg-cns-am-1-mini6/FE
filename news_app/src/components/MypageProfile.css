@@ -1,0 +1,104 @@
+/* 공통 헤더 스타일 (Mypage.js와 동일) */
+.mypage-header {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .mypage-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .mypage-header p {
+    color: #666;
+  }
+  
+  /* 개인정보 수정 타이틀 영역 */
+  .text-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  .horizonalBar {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+  }
+  
+  /* 개인정보 수정 메인 컨테이너 */
+  .profile-container {
+    width: 819px;
+    height: 400px;
+    background-color: #dae9fb;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    position: relative;
+  }
+  
+  /* 프로필 사진 */
+  .profile-image-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-image {
+    width: 250px;
+    height: 250px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 20px;
+  }
+  
+  /* 사진 업로드 버튼 */
+  .upload-button {
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+  }
+  
+  /* 우측 영역 (이름, 이메일 표시) */
+  .profile-info {
+    flex: 1;
+    padding-left: 40px;
+    display: flex;
+    padding-top: 60px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 25px;
+    color: #000;
+  }
+  
+  .profile-info p {
+    margin: 5px 0;
+  }
+  
+  /* 우측 하단 저장 버튼 */
+  .save-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #465fbf;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
