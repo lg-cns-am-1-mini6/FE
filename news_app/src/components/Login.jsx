@@ -5,7 +5,7 @@ export default function Login() {
     <>
       <div className="login-container">
         <div className="loginbox">
-          <div className="login-text-art">
+          <div className="text-art">
             <span className="horizonalBar"></span>
             <span>소셜 로그인</span>
             <span className="horizonalBar"></span>
