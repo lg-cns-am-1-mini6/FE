@@ -26,13 +26,13 @@ const Header = () => {
           {isOpen && (
             <ul class="dropdown-menu">
               <li>
-                <Link to="/mypage">MY PAGE</Link>
+                <Link to="/MypageProfile">MY PAGE</Link>
               </li>
               <li>
-                <Link to="/mypage">관심 주제</Link>
+                <Link to="/MypageKeyword">관심 주제</Link>
               </li>
               <li>
-                <Link to="/mypage">스크랩한 뉴스</Link>
+                <Link to="/MypageScrap">스크랩한 뉴스</Link>
               </li>
             </ul>
           )}
