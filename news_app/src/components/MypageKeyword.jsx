@@ -44,7 +44,7 @@ export default function MypageKeyword() {
   };
 
   return (
-    <div>
+    <div className="mypage-body">
       <header className="mypage-header">
         <h1>마이페이지</h1>
         <p>{username}님, 안녕하세요</p>

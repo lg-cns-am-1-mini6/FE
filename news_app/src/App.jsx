@@ -9,6 +9,7 @@ import "./App.css";
 import MypageProfile from "./components/MypageProfile.jsx";
 import MypageKeyword from "./components/MypageKeyword.jsx";
 import MypageScrap from "./components/MypageScrap.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/MypageKeyword" element={<MypageKeyword />} />
           <Route path="/MypageScrap" element={<MypageScrap />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
