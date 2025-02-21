@@ -8,6 +8,7 @@ import Mypage from "./components/Mypage.jsx";
 import "./App.css";
 import MypageProfile from "./components/MypageProfile.jsx";
 import MypageKeyword from "./components/MypageKeyword.jsx";
+import MypageScrap from "./components/MypageScrap.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/MypageProfile" element={<MypageProfile />} />
           <Route path="/MypageKeyword" element={<MypageKeyword />} />
+          <Route path="/MypageScrap" element={<MypageScrap />} />
         </Routes>
       </div>
     </Router>
