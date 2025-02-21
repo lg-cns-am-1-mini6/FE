@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MypageScrap.css";
 
@@ -18,35 +18,61 @@ function ScrapCard({ title, content, onDelete }) {
 }
 
 export default function MypageScrap() {
-  const [username] = useState("hong");
-
-  // 예시 스크랩 기사 목록 (서버 연동 전)
-  const initialNewsList = [
-    {
-      title: "title_example",
-      content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita veniam iusto quas dolorem itaque rerum explicabo officia aut placeat cupiditate ex excepturi velit, magni molestiae reprehenderit provident repellendus asperiores maxime!",
-    },
-    { title: "title_example", content: "content_example" },
-    { title: "title_example", content: "content_example" },
-    { title: "title_example", content: "content_example" },
-    { title: "title_example", content: "content_example" },
-    { title: "title_example", content: "content_example" },
-    { title: "title_example", content: "content_example" },
-  ];
-
-  const [newslist, setNewslist] = useState(initialNewsList);
+  const [username, setUsername] = useState("");
+  const [newslist, setNewslist] = useState([]);
   const navigate = useNavigate();
+
+  // 현재 로그인한 사용자 id (추후 인증 방식에 따라 동적으로 변경 가능)
+  const currentUserId = "member1";
+
+  // mock data에서 현재 사용자의 스크랩 기사 목록을 불러오는 함수
+  const fetchScrapData = () => {
+    fetch("/result_mock.json")
+      .then((res) => res.json())
+      .then((data) => {
+        // members 배열에서 현재 사용자 정보 추출
+        const currentUser = data.members.find((m) => m.id === currentUserId);
+        if (currentUser) {
+          setUsername(currentUser.username);
+        }
+        // newsScraps에서 현재 사용자의 스크랩 데이터 필터링
+        const userScraps = data.newsScraps.filter(
+          (scrap) => scrap.user_id === currentUserId
+        );
+        // 각 스크랩에 대해 newsArticles에서 일치하는 기사를 찾아 title과 description을 추출
+        const scrapArticles = userScraps
+          .map((scrap) => {
+            const article = data.newsArticles.find(
+              (art) => art.news_id === scrap.news_id
+            );
+            if (article) {
+              return {
+                title: article.title,
+                content: article.description,
+              };
+            }
+            return null;
+          })
+          .filter((item) => item !== null);
+        setNewslist(scrapArticles);
+      })
+      .catch((err) => console.error("Error loading mock data", err));
+  };
+
+  // 컴포넌트 마운트 시 데이터 fetch
+  useEffect(() => {
+    fetchScrapData();
+  }, []);
 
   // 카드 삭제 처리
   const handleDelete = (index) => {
     setNewslist(newslist.filter((_, i) => i !== index));
   };
 
-  // "원래대로" 버튼: 원본 기사 목록으로 reset
+  // "원래대로" 버튼 클릭 시 mock data 재요청
   const resetList = () => {
     console.log("원래대로 버튼 클릭");
-    setNewslist(initialNewsList);
+    fetchScrapData();
   };
 
   // "수정사항 저장" 버튼: 변경된 스크랩 기사 목록 저장 (서버 전송 시뮬레이션)
@@ -57,10 +83,10 @@ export default function MypageScrap() {
 
   return (
     <>
-      {/* 상단 헤더 (Mypage와 동일) */}
+      {/* 상단 헤더 */}
       <header className="mypage-header">
         <h1>마이페이지</h1>
-        <p>{username}님, 안녕하세요</p>
+        <p>{username && `${username}님, 안녕하세요`}</p>
       </header>
       <br />
 
