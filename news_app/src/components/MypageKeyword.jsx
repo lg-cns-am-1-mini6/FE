@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./MypageKeyword.css";
 
 function KeywordItem({ keyword, onDelete }) {
-  // 만약 키워드 길이가 10자 이상이면 10자까지만 보여주고 "..." 추가
   const displayWord =
     keyword.length >= 10 ? keyword.slice(0, 10) + "..." : keyword;
   return (
@@ -14,10 +13,38 @@ function KeywordItem({ keyword, onDelete }) {
 }
 
 export default function MypageKeyword() {
-  const username = "hong"; // 현재 사용자 이름
-  const initialKeywords = ["예시_키워드1", "예시_키워드2", "예시_키워드3"];
-  const [keywords, setKeywords] = useState(initialKeywords);
+  const [username, setUsername] = useState("");
+  const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
+
+  // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
+  const currentUserId = "member1";
+
+  // mock 데이터에서 사용자 정보와 키워드를 가져오는 함수
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/result_mock.json"); // mock 데이터 경로
+        const data = await response.json();
+
+        // 예시로 첫 번째 멤버의 username을 사용
+        const member = data.members[0];
+        setUsername(member.username);
+
+        // 해당 멤버의 키워드 데이터를 가져옴
+        const memberKeywords = data.recommendedKeywords.find(
+          (kw) => kw.id === member.id
+        );
+        if (memberKeywords) {
+          setKeywords(memberKeywords.keyword);
+        }
+      } catch (error) {
+        console.error("Error fetching mock data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // 입력창에 값을 입력 후 + 버튼을 누르면 새 키워드 추가
   const addKeyword = () => {
@@ -34,7 +61,25 @@ export default function MypageKeyword() {
 
   // 원래대로 버튼 클릭 시 초기 키워드 목록 복원
   const resetKeywords = () => {
-    setKeywords(initialKeywords);
+    const fetchInitialKeywords = async () => {
+      try {
+        const response = await fetch("/path/to/result_mock.json"); // mock 데이터 경로
+        const data = await response.json();
+
+        // 예시로 첫 번째 멤버의 키워드 데이터를 가져옴
+        const member = data.members[0];
+        const memberKeywords = data.recommendedKeywords.find(
+          (kw) => kw.id === member.id
+        );
+        if (memberKeywords) {
+          setKeywords(memberKeywords.keyword);
+        }
+      } catch (error) {
+        console.error("Error fetching initial keywords:", error);
+      }
+    };
+
+    fetchInitialKeywords();
   };
 
   // 수정사항 저장 버튼 클릭 시 변경된 키워드 목록을 서버 전송(여기서는 콘솔 출력)
