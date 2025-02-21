@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import NewsDetail from "./NewsDetail";
 import "./NewsSearch.css";
 
 const NewsSearch = () => {
   const [news, setNews] = useState([]);
   const [query, setQuery] = useState("");
-  const [selectedNews, setSelectedNews] = useState(null);
 
   useEffect(() => {
     fetch("/result_mock.json")
       .then((res) => res.json())
-      .then((data) => setNews(data.items))
+      .then((data) => setNews(data.newsApiResponse.items))
       .catch((err) => console.error("Error loading news:", err));
   }, []);
 
   const handleSearch = () => {
     fetch(`/api/search?query=${encodeURIComponent(query)}`)
       .then((res) => res.json())
-      .then((data) => setNews(data.items))
+      .then((data) => setNews(data.newsApiResponse.items))
       .catch((err) => console.error("Error loading search results:", err));
   };
 
@@ -44,19 +42,13 @@ const NewsSearch = () => {
         </div>
         <div className="news-list">
           {news.map((item, index) => (
-            <div
-              key={index}
-              className="news-card"
-              onClick={() => setSelectedNews(item)}
-            >
+            <div key={index} className="news-card">
               <button className="summary-btn">📝 AI 요약 사용 가능</button>
               <h2>
                 <a
-                  href="#!"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedNews(item);
-                  }}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   "{item.title}"
                 </a>
@@ -69,9 +61,6 @@ const NewsSearch = () => {
           ))}
         </div>
       </div>
-      {selectedNews && (
-        <NewsDetail news={selectedNews} onClose={() => setSelectedNews(null)} />
-      )}
     </>
   );
 };
