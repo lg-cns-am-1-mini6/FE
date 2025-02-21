@@ -1,12 +1,18 @@
+import { useEffect } from "react";
 import "./Login.css";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 export default function Login() {
   const googleLogin = () => {
-    console.log("구글 로그인");
+    const redirectUrl = `http://localhost:5173/login/oauth2/code/google`;
+    const loginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=811961721537-tkh0nscnnca6jimfl8n6t39ocgulaq4o.apps.googleusercontent.com&redirect_uri=${redirectUrl}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
+    window.location.href = loginUrl;
   };
 
   const kakaoLogin = () => {
-    console.log("카카오 로그인");
+    const redirectUrl = `http://localhost:5173/login/oauth2/code/kakao`;
+    const loginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=cde8f9b64bcac0cefbfc787a71278ca0&redirect_uri=${redirectUrl}`;
+    window.location.href = loginUrl;
   };
 
   return (
