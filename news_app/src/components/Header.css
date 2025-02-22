@@ -1,40 +1,36 @@
-:root {
-  --main-color: #6798C0;
-  --main-bg-color: #FFFDF7;
-  --main-p-color: #FDC921;
-  
-  --light-color: #99D6EA;
-  --light-p-color: #FDD85D;
-}
-
 .header {
   position: fixed;
   top: 0;
-  height: 5rem;
+  height: 70px;
   width: 100%;
-  background-color: var(--main-color);
+  background-color: #21527e;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  color: var(--main-bg-color);
+  color: white;
 }
-.header-btn {
-  font-size: 1.5rem;
+
+.logo {
+  font-size: 20px;
   font-weight: bold;
-  padding-right: 2rem;
 }
 
-.header-logo {
-  font-family: "Michroma", sans-serif;
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 1.5rem;
 }
 
-.header-btn :visited {
-  color: var(--main-bg-color);
+.header-btn {
+  padding-right: 3rem;
 }
 
-.header-btn :hover {
-  color: var(--main-p-color);
+.header :visited {
+  color: #f4fcff;
 }
 
 .menu-container {
@@ -45,11 +41,11 @@
 
 .dropdown-menu {
   position: fixed;
-  top: 5rem;
+  top: 70px;
   right: 0px;
-  background-color:var(--main-color);
+  background-color: #21527e;
   list-style: none;
-  padding: 0 0 0.5rem 0;
+  padding: 10px 0;
   margin: 0;
   min-width: 10rem;
 }
@@ -58,5 +54,5 @@
   padding: 8px 20px;
 }
 .dropdown-menu li:hover {
-  color: var(--main-p-color);
+  background-color: rgb(70, 57, 145);
 }

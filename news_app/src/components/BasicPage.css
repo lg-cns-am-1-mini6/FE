@@ -7,13 +7,7 @@
 }
 
 .basic-title {
-  font-family: "Michroma", serif;
-  font-size: 3rem;
-  color: var(--main-color);
-}
-
-.basic-title span {
-  color: var(--light-color);
+  font-size: 2.5rem;
 }
 
 .basic-hashtags {
@@ -24,18 +18,4 @@
 
 .basic-hashtags p {
   margin: 3px;
-}
-
-.search-box {
-  height: 2.5rem;
-  background-color: #d3eef4;
-}
-
-.search-box input {
-  outline: none;
-  color: var(--main-color);
-}
-
-.search-box input::placeholder {
-  color: var(--main-color);
 }
