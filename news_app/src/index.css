@@ -2,3 +2,8 @@ body {
     margin: 0;
     padding: 0;
 }
+
+:root {
+    --main-bg-color: #FFFDF7;
+    --main-color: #6798C0;
+}
