@@ -17,18 +17,15 @@ export default function Login() {
 
   return (
     <>
-      <div className="login-container">
-        <div className="loginbox">
-          <div className="text-art">
-            <span className="horizonalBar"></span>
-            <span>소셜 로그인</span>
-            <span className="horizonalBar"></span>
-          </div>
-          <br></br>
-          <div className="login-buttons">
-            <button onClick={kakaoLogin}>카카오 계정 로그인</button>
-            <button onClick={googleLogin}>구글 계정 로그인!</button>
-          </div>
+      <header className="mypage-header">
+        <h1>LOG IN</h1>
+        <p>소셜 계정으로 로그인할 수 있습니다</p>
+      </header>
+      <br />
+      <div className="loginbox">
+        <div className="login-buttons">
+          <button onClick={kakaoLogin}>카카오 계정 로그인</button>
+          <button onClick={googleLogin}>구글 계정 로그인</button>
         </div>
       </div>
     </>

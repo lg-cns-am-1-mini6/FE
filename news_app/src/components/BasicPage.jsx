@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./BasicPage.css";
+import Footer from "./Footer";
 
 export default function BasicPage() {
   const [username, setUsername] = useState("hong");
@@ -14,7 +15,9 @@ export default function BasicPage() {
   return (
     <div className="basic-page">
       <div className="news-container">
-        <h1 className="basic-title">NEW<span>jean</span>S</h1>
+        <h1 className="basic-title">
+          NEW<span>jean</span>S
+        </h1>
         <div className="search-box">
           <input
             type="text"

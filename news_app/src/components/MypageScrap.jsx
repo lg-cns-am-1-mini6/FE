@@ -85,7 +85,7 @@ export default function MypageScrap() {
     <>
       {/* 상단 헤더 */}
       <header className="mypage-header">
-        <h1>마이페이지</h1>
+        <h1>MY PAGE</h1>
         <p>{username && `${username}님, 안녕하세요`}</p>
       </header>
       <br />

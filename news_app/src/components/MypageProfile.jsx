@@ -14,7 +14,9 @@ export default function MypageProfile() {
     fetch("/result_mock.json")
       .then((res) => res.json())
       .then((data) => {
-        const currentUser = data.members.find((member) => member.id === currentUserId);
+        const currentUser = data.members.find(
+          (member) => member.id === currentUserId
+        );
         if (currentUser) {
           setUsername(currentUser.username);
           setEmail(currentUser.user_email);
@@ -24,7 +26,9 @@ export default function MypageProfile() {
           }
         }
       })
-      .catch((err) => console.error("프로필 데이터를 불러오는 중 오류 발생:", err));
+      .catch((err) =>
+        console.error("프로필 데이터를 불러오는 중 오류 발생:", err)
+      );
   };
 
   useEffect(() => {
@@ -47,7 +51,7 @@ export default function MypageProfile() {
   return (
     <>
       <header className="mypage-header">
-        <h1>마이페이지</h1>
+        <h1>MY PAGE</h1>
         <p>{username && `${username}님, 안녕하세요`}</p>
       </header>
       <br />
@@ -62,23 +66,27 @@ export default function MypageProfile() {
             className="profile-image"
             style={{ backgroundImage: image ? `url(${image})` : "none" }}
           ></div>
-          <label htmlFor="fileInput" className="upload-button">
-            사진 업로드
-          </label>
-          <input
-            type="file"
-            id="fileInput"
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-          />
         </div>
         <div className="profile-info">
-          <p className="profile-name">{username}</p>
-          <p className="profile-email">{email}</p>
+          <div className="profile-content">
+            <p className="profile-name">{username}</p>
+            <p className="profile-email">{email}</p>
+          </div>
+          <div>
+            <label htmlFor="fileInput" className="upload-button">
+              사진 업로드
+            </label>
+            <input
+              type="file"
+              id="fileInput"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+            <button className="save-button" onClick={handleSave}>
+              저장
+            </button>
+          </div>
         </div>
-        <button className="save-button" onClick={handleSave}>
-          저장
-        </button>
       </div>
     </>
   );

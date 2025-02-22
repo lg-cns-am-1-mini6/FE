@@ -89,18 +89,19 @@ export default function MypageKeyword() {
   };
 
   return (
-    <div className="mypage-body">
+    <>
       <header className="mypage-header">
-        <h1>마이페이지</h1>
+        <h1>MY PAGE</h1>
         <p>{username}님, 안녕하세요</p>
       </header>
       <br />
+      <div className="text-art">
+        <span className="horizonalBar"></span>
+        <h3>관심 키워드 목록</h3>
+        <span className="horizonalBar"></span>
+      </div>
+
       <div className="keyword-box">
-        <div className="text-art">
-          <span className="horizonalBar"></span>
-          <h3>관심 키워드 목록</h3>
-          <span className="horizonalBar"></span>
-        </div>
         {/* 키워드 추가 입력창 */}
         <div className="keyword-add">
           <input
@@ -127,9 +128,9 @@ export default function MypageKeyword() {
         )}
         <div className="keyword-buttons">
           <button onClick={resetKeywords}>원래대로</button>
-          <button onClick={saveChanges}>수정사항 저장</button>
+          <button onClick={saveChanges}>저장</button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

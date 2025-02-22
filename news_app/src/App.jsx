@@ -4,7 +4,6 @@ import Header from "./components/Header.jsx";
 import NewsSearch from "./components/NewsSearch.jsx";
 import Login from "./components/Login.jsx";
 import BasicPage from "./components/BasicPage.jsx";
-import Mypage from "./components/Mypage.jsx";
 import "./App.css";
 import MypageProfile from "./components/MypageProfile.jsx";
 import MypageKeyword from "./components/MypageKeyword.jsx";
@@ -25,7 +24,6 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<BasicPage />} />
-          <Route path="/Mypage" element={<Mypage />} />
           <Route path="/NewsSearch" element={<NewsSearch />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/MypageProfile" element={<MypageProfile />} />

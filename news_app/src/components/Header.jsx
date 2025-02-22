@@ -7,22 +7,25 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="header">
-      <span className="header-btn header-logo" style={{fontSize: "2rem"}}>
-        <Link to="/">NEWjeanS</Link>
+      <span className="header-btn header-logo" style={{ fontSize: "2rem" }}>
+        <Link to="/">
+          NEW<span>jean</span>S
+        </Link>
       </span>
       <nav className="header-btn">
-        {login && (
-          <button onClick={() => setLogin(!login)}>
-            Logout
-          </button>
-        )}
+        {login && <button onClick={() => setLogin(!login)}>Logout</button>}
         {!login && (
           <Link to="/login" className="header-btn">
             LOG IN
           </Link>
         )}
         <div className="menu-container">
-          <span className="header-btn" onClick={() => setIsOpen((prev) => !prev)}>MY MENU</span>
+          <span
+            className="header-btn"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            MY MENU
+          </span>
           {isOpen && (
             <ul class="dropdown-menu">
               <li>

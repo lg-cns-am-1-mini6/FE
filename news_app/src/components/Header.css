@@ -1,10 +1,13 @@
 :root {
-  --main-color: #6798C0;
-  --main-bg-color: #FFFDF7;
-  --main-p-color: #FDC921;
-  
-  --light-color: #99D6EA;
-  --light-p-color: #FDD85D;
+  --main-color: #6798c0;
+  --main-bg-color: #fffdf7;
+  /* --main-bg-color: red; */
+  --main-p-color: #fdc921;
+
+  --light-color: #99d6ea;
+  --light-p-color: #fdd85d;
+
+  --light-2-color: #d3eef4;
 }
 
 .header {
@@ -47,7 +50,7 @@
   position: fixed;
   top: 5rem;
   right: 0px;
-  background-color:var(--main-color);
+  background-color: var(--main-color);
   list-style: none;
   padding: 0 0 0.5rem 0;
   margin: 0;

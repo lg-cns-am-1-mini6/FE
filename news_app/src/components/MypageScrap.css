@@ -1,7 +1,8 @@
-/* 헤더 스타일 (Mypage와 동일) */
 .mypage-header {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 8rem;
+  font-family: "Michroma";
+  color: var(--main-color);
 }
 
 .mypage-header h1 {
@@ -23,6 +24,7 @@
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 24px;
+  margin: 0 15%;
 }
 
 .horizonalBar {

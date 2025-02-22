@@ -28,7 +28,7 @@
 
 .search-box {
   height: 2.5rem;
-  background-color: #d3eef4;
+  background-color: var(--light-2-color);
 }
 
 .search-box input {

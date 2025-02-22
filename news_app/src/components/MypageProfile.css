@@ -1,7 +1,8 @@
-/* 공통 헤더 스타일 (Mypage.js와 동일) */
 .mypage-header {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 8rem;
+  font-family: "Michroma";
+  color: var(--main-color);
 }
 
 .mypage-header h1 {
@@ -35,13 +36,12 @@
 .profile-container {
   width: 50%;
   height: 400px;
-  background-color: #dae9fb;
+  background-color: var(--light-2-color);
   border-radius: 15px;
   margin: 0 auto;
   padding: 40px;
   box-sizing: border-box;
   display: flex;
-  position: relative;
 }
 
 /* 프로필 사진 */
@@ -49,6 +49,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .profile-image {
@@ -78,8 +79,8 @@
   display: flex;
   padding-top: 60px;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: self-end;
   font-size: 25px;
   color: #000;
 }
@@ -88,11 +89,12 @@
   margin: 5px 0;
 }
 
+.profile-content {
+  color: var(--main-color);
+}
+
 /* 우측 하단 저장 버튼 */
 .save-button {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
   padding: 10px 20px;
   background-color: #465fbf;
   color: #fff;

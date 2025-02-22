@@ -5,6 +5,12 @@ export default function Footer() {
     <>
       <footer className="footer-body">
         <p>footer example</p>
+        <p>footer example</p>
+        <p>footer example</p>
+        <p>footer example</p>
+        <p>footer example</p>
+        <p>footer example</p>
+        <p>footer example</p>
       </footer>
     </>
   );
