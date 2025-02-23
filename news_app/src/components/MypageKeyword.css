@@ -19,7 +19,8 @@
 .keyword-box {
   background-color: #fff;
   width: 30rem;
-  margin: 20px auto;
+  min-height: 15rem;
+  margin: 1rem auto 10rem auto;
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

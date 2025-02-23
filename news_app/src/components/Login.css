@@ -6,14 +6,13 @@
 }
 
 .loginbox {
-  /* background-color: var(--light-3-color); */
-  padding: 20px;
+  padding: 2rem;
   border-radius: 2rem;
   text-align: center;
   justify-self: center;
   width: 500px;
   padding: 2.5rem 2rem;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .text-art {
