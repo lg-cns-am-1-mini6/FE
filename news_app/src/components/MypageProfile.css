@@ -34,14 +34,15 @@
 
 /* 개인정보 수정 메인 컨테이너 */
 .profile-container {
-  min-width: 10rem;
+  min-width: 7rem;
   height: auto;
-  background-color: var(--light-2-color);
+  background-color: white;
   border-radius: 15px;
   margin: 0 auto;
   padding: 40px;
   box-sizing: border-box;
   display: flex;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 프로필 사진 */
@@ -55,11 +56,12 @@
 .profile-image {
   width: 250px;
   height: 250px;
-  background-color: #d9d9d9;
+  /* background-color: #d9d9d9;   */
   border-radius: 50%;
   background-size: cover;
   background-position: center;
   margin-bottom: 20px;
+  border: 5px outset var(--light-2-color);
 }
 
 /* 우측 영역 (이름, 이메일 표시) */
@@ -87,7 +89,8 @@
 .profile-button {
   padding: 10px 20px;
   background-color: var(--main-color);
-  color: white;
+  background-color: var(--light-2-color);
+  color: var(--main-color);
   border: none;
   border-radius: 40px;
   cursor: pointer;
@@ -95,7 +98,12 @@
 }
 
 .profile-button:last-child {
-  background-color: white;
+  background-color: var(--light-color);
   color: var(--main-color);
   margin-left: 0.5rem;
+}
+
+.profile-button:hover {
+  background-color: var(--main-color);
+  color: white;
 }
