@@ -31,7 +31,7 @@ const NewsSearch = () => {
         <h1 className="site-title">
           NEW<span>jean</span>S
         </h1>
-        <div className="search-box">
+        <div className="result-search-box">
           <input
             type="text"
             placeholder="검색어를 입력하세요"

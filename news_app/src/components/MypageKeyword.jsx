@@ -107,6 +107,7 @@ export default function MypageKeyword() {
 
       <div className="keyword-box">
         {/* 키워드 추가 입력창 */}
+        <div>
         <div className="keyword-add">
           <input
             type="text"
@@ -129,7 +130,7 @@ export default function MypageKeyword() {
               />
             ))}
           </div>
-        )}
+        )}</div>
         <div className="keyword-buttons">
           <button onClick={resetKeywords}>원래대로</button>
           <button onClick={saveChanges}>저장</button>
