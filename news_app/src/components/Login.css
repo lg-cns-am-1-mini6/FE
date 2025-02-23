@@ -6,7 +6,7 @@
 }
 
 .loginbox {
-  background-color: #f4fcff;
+  /* background-color: var(--light-3-color); */
   padding: 20px;
   border-radius: 2rem;
   text-align: center;

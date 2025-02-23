@@ -1,20 +1,25 @@
-.news-container {
+.search-container {
+  margin-top: 5rem;
   text-align: center;
-  margin-top: 70px;
 }
 
 .site-title {
-  margin-top: 20px;
-  font-size: 28px;
-  font-weight: bold;
+  margin: 3rem 0 0.7rem 0;
+  font-size: 2rem;
+  font-family: "Michroma";
+  color: var(--main-color);
+}
+
+.site-title span {
+  color: var(--light-color);
 }
 
 .search-box {
-  margin: 20px auto;
-  width: 720px;
-  height: 61px;
-  background-color: #dae9fb;
-  border-radius: 28px;
+  margin: 1rem auto;
+  height: 1.8rem;
+  width: 70%;
+  background-color: var(--light-2-color);
+  border-radius: 2rem;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -24,56 +29,85 @@
   flex: 1;
   border: none;
   background: none;
-  font-size: 18px;
-  padding-left: 15px;
+  font-size: 1.2rem;
+  padding-left: 1rem;
 }
 
 .search-box button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
 .search-hashtags {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin: 10px 0;
-}
-
-.like-btn,
-.retry-btn {
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
+  gap: 1rem;
+  margin: 0.8rem 0;
+  color: var(--main-color);
 }
 
 .news-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
 .news-card {
-  width: 80%;
-  padding: 15px;
-  background: #f4f4f4;
-  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  padding: 1.2rem;
+  background: var(--light-2-color);
+  border-radius: 1rem;
   text-align: left;
 }
 
-.news-card h2 a {
+.news-card-text h2 a {
   text-decoration: none;
-  color: black;
+  color: navy;
 }
 
-.summary-btn {
-  background: #21527e;
-  color: white;
+.news-card-text p {
+  color: var(--main-color);
+}
+
+.news-card button {
+  height: 2rem;
+}
+
+.like-btn {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
+
+  background-color: var(--light-2-color);
+  color: navy;
+}
+
+.like-btn:hover {
+  background-color: var(--light-color);
+}
+
+.scrap-button {
+  background-color: var(--light-color);
+  color: navy;
+
+  border: none;
+  border-radius: 4rem;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.scrap-button:hover {
+  background-color: var(--main-color);
+  color: var(--main-bg-color);
+}
+
+.scrap-button:active {
+  background-color: navy;
 }

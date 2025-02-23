@@ -32,6 +32,8 @@ function App() {
           {/* 로그인용 */}
           <Route path="/login/oauth2/code/google" element={<LoginHandler />} />
           <Route path="/login/oauth2/code/kakao" element={<LoginHandler />} />
+
+          {/* 에러 페이지 : 잘못된 경로도 포함해야 */}
         </Routes>
         <Footer />
       </div>

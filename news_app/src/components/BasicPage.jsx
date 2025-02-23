@@ -18,7 +18,7 @@ export default function BasicPage() {
         <h1 className="basic-title">
           NEW<span>jean</span>S
         </h1>
-        <div className="search-box">
+        <div className="search-box basic-search-box">
           <input
             type="text"
             placeholder="검색어를 입력하세요"
@@ -44,9 +44,9 @@ export default function BasicPage() {
               </p>
             </>
           )}
-          <button onClick={() => setLogin(!login)}>
+          {/* <button onClick={() => setLogin(!login)}>
             로그인 여부 토글 (테스트용)
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

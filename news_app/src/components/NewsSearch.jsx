@@ -23,8 +23,10 @@ const NewsSearch = () => {
   return (
     <>
       <Header />
-      <div className="news-container">
-        <h1 className="site-title">NEWjeanS</h1>
+      <div className="search-container">
+        <h1 className="site-title">
+          NEW<span>jean</span>S
+        </h1>
         <div className="search-box">
           <input
             type="text"
@@ -35,28 +37,26 @@ const NewsSearch = () => {
           <button onClick={handleSearch}>🔍</button>
         </div>
         <div className="search-hashtags">
-          <span>#OO이가_뉴스를_정리했어요!</span>
-          <span>#결과가 어떤가요?</span>
+          <span>#검색 결과가 어떤가요?</span>
           <button className="like-btn">✔️ 마음에 들어요</button>
-          <button className="retry-btn">❌ 다시 추천해주세요</button>
+          <button className="like-btn">❌ 다시 추천해주세요</button>
         </div>
         <div className="news-list">
           {news.map((item, index) => (
             <div key={index} className="news-card">
-              <button className="summary-btn">📝 AI 요약 사용 가능</button>
-              <h2>
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  "{item.title}"
-                </a>
-              </h2>
-              <p>#AI가_뉴스를_요약해줄게요!</p>
-              <p>
+              <div className="news-card-text">
+                {/* <button className="summary-btn">📝 AI 요약 사용 가능</button> */}
+                <h2>
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    "{item.title}"
+                  </a>
+                </h2>
+                <p>#요약_해시태그 #요약_해시태그 #요약_해시태그</p>
+                {/* <p>
                 #요약을_원하면 <span>#여기</span> <span>#를_눌러주세요</span>
-              </p>
+              </p> */}
+              </div>
+              <button className="scrap-button">스크랩</button>
             </div>
           ))}
         </div>
