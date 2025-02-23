@@ -22,6 +22,10 @@ export default function MypageScrap() {
   const [newslist, setNewslist] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   // 현재 로그인한 사용자 id (추후 인증 방식에 따라 동적으로 변경 가능)
   const currentUserId = "member1";
 

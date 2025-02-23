@@ -17,6 +17,10 @@ export default function MypageKeyword() {
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
   const currentUserId = "member1";
 

@@ -48,6 +48,10 @@ export default function MypageProfile() {
     // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <header className="mypage-header">

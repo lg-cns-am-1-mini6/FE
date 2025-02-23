@@ -15,6 +15,10 @@ export default function Login() {
     window.location.href = loginUrl;
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <header className="mypage-header">

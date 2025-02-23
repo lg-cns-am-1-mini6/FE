@@ -7,6 +7,10 @@ const NewsSearch = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     fetch("/result_mock.json")
       .then((res) => res.json())
       .then((data) => setNews(data.newsApiResponse.items))

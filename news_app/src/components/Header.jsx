@@ -7,7 +7,11 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="header">
-      <span className="header-btn header-logo" style={{ fontSize: "2rem" }}>
+      <span
+        className="header-btn header-logo"
+        style={{ fontSize: "2rem" }}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <Link to="/">
           NEW<span>jean</span>S
         </Link>
@@ -15,7 +19,11 @@ const Header = () => {
       <nav className="header-btn">
         {login && <button onClick={() => setLogin(!login)}>Logout</button>}
         {!login && (
-          <Link to="/login" className="header-btn">
+          <Link
+            to="/login"
+            className="header-btn"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             LOG IN
           </Link>
         )}
@@ -26,7 +34,10 @@ const Header = () => {
           >
             MY MENU
           </span>
-          <ul class="dropdown-menu">
+          <ul
+            class="dropdown-menu"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             <li>
               <Link to="/MypageProfile">내 정보</Link>
             </li>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./BasicPage.css";
 import Footer from "./Footer";
 
@@ -11,6 +11,10 @@ export default function BasicPage() {
     "예시키워드",
     "예시키워드",
   ]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div className="basic-page">
