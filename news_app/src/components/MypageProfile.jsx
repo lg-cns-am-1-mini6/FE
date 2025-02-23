@@ -69,11 +69,11 @@ export default function MypageProfile() {
         </div>
         <div className="profile-info">
           <div className="profile-content">
-            <p className="profile-name">{username}</p>
-            <p className="profile-email">{email}</p>
+            <p>{username}</p>
+            <p>{email}</p>
           </div>
           <div>
-            <label htmlFor="fileInput" className="upload-button">
+            <label htmlFor="fileInput" className="profile-button">
               사진 업로드
             </label>
             <input
@@ -82,7 +82,7 @@ export default function MypageProfile() {
               onChange={handleImageChange}
               style={{ display: "none" }}
             />
-            <button className="save-button" onClick={handleSave}>
+            <button className="profile-button" onClick={handleSave}>
               저장
             </button>
           </div>

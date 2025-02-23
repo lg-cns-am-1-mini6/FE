@@ -22,6 +22,7 @@
   padding: 0 20px;
   color: var(--main-bg-color);
 }
+
 .header-btn {
   font-size: 1.5rem;
   font-weight: bold;
@@ -50,16 +51,30 @@
   position: fixed;
   top: 5rem;
   right: 0px;
-  background-color: var(--main-color);
+  background-color: var(--main-bg-color);
   list-style: none;
   padding: 0 0 0.5rem 0;
   margin: 0;
   min-width: 10rem;
+  text-align: center;
+
+  max-height: 0; /* 처음에는 안 보이게 */
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+.menu-container.open .dropdown-menu {
+  max-height: 200px; /* 충분한 높이 설정 */
 }
 
 .dropdown-menu li {
   padding: 8px 20px;
+  border-bottom: 1px solid var(--light-color);
 }
-.dropdown-menu li:hover {
+
+.dropdown-menu li a:visited {
+  color: var(--main-color);
+}
+
+.dropdown-menu li a:hover {
   color: var(--main-p-color);
 }

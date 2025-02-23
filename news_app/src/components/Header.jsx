@@ -19,26 +19,24 @@ const Header = () => {
             LOG IN
           </Link>
         )}
-        <div className="menu-container">
+        <div className={`menu-container ${isOpen ? "open" : "closed"}`}>
           <span
             className="header-btn"
             onClick={() => setIsOpen((prev) => !prev)}
           >
             MY MENU
           </span>
-          {isOpen && (
-            <ul class="dropdown-menu">
-              <li>
-                <Link to="/MypageProfile">MY PAGE</Link>
-              </li>
-              <li>
-                <Link to="/MypageKeyword">관심 주제</Link>
-              </li>
-              <li>
-                <Link to="/MypageScrap">스크랩한 뉴스</Link>
-              </li>
-            </ul>
-          )}
+          <ul class="dropdown-menu">
+            <li>
+              <Link to="/MypageProfile">내 정보</Link>
+            </li>
+            <li>
+              <Link to="/MypageKeyword">관심 주제</Link>
+            </li>
+            <li>
+              <Link to="/MypageScrap">스크랩한 뉴스</Link>
+            </li>
+          </ul>
         </div>
       </nav>
     </header>

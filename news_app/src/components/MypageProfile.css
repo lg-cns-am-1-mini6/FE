@@ -34,8 +34,8 @@
 
 /* 개인정보 수정 메인 컨테이너 */
 .profile-container {
-  width: 50%;
-  height: 400px;
+  min-width: 10rem;
+  height: auto;
   background-color: var(--light-2-color);
   border-radius: 15px;
   margin: 0 auto;
@@ -62,16 +62,6 @@
   margin-bottom: 20px;
 }
 
-/* 사진 업로드 버튼 */
-.upload-button {
-  display: inline-block;
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-}
-
 /* 우측 영역 (이름, 이메일 표시) */
 .profile-info {
   flex: 1;
@@ -91,15 +81,21 @@
 
 .profile-content {
   color: var(--main-color);
+  padding-bottom: 1rem;
 }
 
-/* 우측 하단 저장 버튼 */
-.save-button {
+.profile-button {
   padding: 10px 20px;
-  background-color: #465fbf;
-  color: #fff;
+  background-color: var(--main-color);
+  color: white;
   border: none;
   border-radius: 40px;
   cursor: pointer;
   font-size: 16px;
+}
+
+.profile-button:last-child {
+  background-color: white;
+  color: var(--main-color);
+  margin-left: 0.5rem;
 }
