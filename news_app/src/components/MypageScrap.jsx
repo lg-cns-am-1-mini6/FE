@@ -130,7 +130,7 @@ export default function MypageScrap() {
       </div>
 
       {/* 페이지 하단 우측의 원래대로 / 수정사항 저장 버튼 */}
-      <div className="keyword-buttons">
+      <div className="scrap-buttons">
         <button onClick={resetList}>원래대로</button>
         <button onClick={saveChanges}>수정사항 저장</button>
       </div>

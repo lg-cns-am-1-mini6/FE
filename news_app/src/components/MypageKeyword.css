@@ -18,12 +18,16 @@
 
 .keyword-box {
   background-color: #fff;
-  width: 30%;
+  width: 30rem;
   margin: 20px auto;
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .keyword-box h3 {
@@ -56,18 +60,18 @@
 .keyword-add input {
   padding: 8px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 70%;
+  border: none;
+  border-bottom: 1px solid var(--main-color);
+  width: 20rem;
+  margin-right: 0.2rem;
 }
 
 .keyword-add button {
   padding: 8px 12px;
-  margin-left: 8px;
   border: none;
-  border-radius: 40px;
-  font-size: 14px;
-  background-color: #465fbf;
+  border-radius: 2rem;
+  font-size: 1rem;
+  background-color: var(--main-color);
   color: white;
   cursor: pointer;
 }
@@ -76,16 +80,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 0.3rem;
+  color: navy;
 }
 
 .keyword-item {
   display: flex;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: var(--light-2-color);
   padding: 5px 10px;
   border-radius: 15px;
   font-size: 14px;
+  height: 1.5rem;
 }
 
 .keyword-item button {
@@ -99,6 +105,7 @@
 .keyword-buttons {
   margin-top: 15px;
   display: flex;
+  min-width: 100%;
   justify-content: flex-end;
 }
 
@@ -112,16 +119,36 @@
 }
 
 .keyword-buttons button:first-child {
-  background-color: #e0e0e0;
+  background-color: var(--light-color);
+  color: navy;
+}
+
+.keyword-buttons button:first-child:active {
+  background-color: var(--main-color);
+  color: var(--main-bg-color);
 }
 
 .keyword-buttons button:last-child {
-  background-color: #465fbf;
-  color: white;
+  background-color: var(--main-color);
+  color: var(--main-bg-color);
+}
+
+.keyword-buttons button:last-child:active {
+  background-color: var(--light-color);
+  color: navy;
 }
 
 .no_contents {
   text-align: center;
   margin-top: 20px;
   color: #888;
+}
+
+.keyword-add input {
+  outline: none;
+  color: var(--main-color);
+}
+
+.keyword-add input::placeholder {
+  color: var(--main-color);
 }

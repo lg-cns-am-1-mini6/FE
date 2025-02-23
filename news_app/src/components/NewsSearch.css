@@ -17,7 +17,7 @@
 .search-box {
   margin: 1rem auto;
   height: 1.8rem;
-  width: 70%;
+  width: 65%;
   background-color: var(--light-2-color);
   border-radius: 2rem;
   display: flex;
@@ -59,7 +59,7 @@
 .news-card {
   display: flex;
   justify-content: space-between;
-  width: 70%;
+  width: 65%;
   padding: 1.2rem;
   background: var(--light-2-color);
   border-radius: 1rem;

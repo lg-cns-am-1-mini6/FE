@@ -25,7 +25,6 @@ export default function Login() {
         <h1>LOG IN</h1>
         <p>소셜 계정으로 로그인할 수 있습니다</p>
       </header>
-      <br />
       <div className="loginbox">
         <div className="login-buttons">
           <button onClick={kakaoLogin}>카카오 계정 로그인</button>
