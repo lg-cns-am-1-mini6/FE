@@ -5,14 +5,13 @@ import "./MypageScrap.css";
 function ScrapCard({ title, content, onDelete }) {
   return (
     <div className="card-box">
-      {/* 삭제버튼: 카드 우측 상단에 위치 */}
+      <div className="card-text">
+        <h2><a>{title}</a></h2>
+        <p>{content}</p>
+      </div>
       <button className="card-delete-btn" onClick={onDelete}>
         X
       </button>
-      <h2>
-        <a>{title}</a>
-      </h2>
-      <p>{content}</p>
     </div>
   );
 }

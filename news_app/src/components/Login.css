@@ -25,6 +25,11 @@
   font-size: 24px;
 }
 
+.mypage-header p {
+  font-family: "Gowun Dodum", serif;
+  font-size: 1.125rem;
+}
+
 .horizonalBar {
   flex-grow: 1;
   height: 1px;
@@ -46,6 +51,7 @@
   border-radius: 20px;
   font-size: 18px;
   cursor: pointer;
+  font-family: "Gowun Dodum", serif;
 }
 
 .login-buttons button:first-child {
