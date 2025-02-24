@@ -18,7 +18,7 @@ const Header = () => {
         </Link>
       </span>
       <nav className="header-btn">
-        {userInfo.name && (
+        {userInfo.username && (
           <Link
             to="/logout"
             className="header-btn"
@@ -27,7 +27,7 @@ const Header = () => {
             LOG OUT
           </Link>
         )}
-        {!userInfo.name && (
+        {!userInfo.username && (
           <Link
             to="/login"
             className="header-btn"
@@ -48,17 +48,17 @@ const Header = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <li>
-              <Link to={userInfo.name ? "/MypageProfile" : "/login"}>
+              <Link to={userInfo.username ? "/MypageProfile" : "/login"}>
                 내 정보
               </Link>
             </li>
             <li>
-              <Link to={userInfo.name ? "/MypageKeyword" : "/login"}>
+              <Link to={userInfo.username ? "/MypageKeyword" : "/login"}>
                 관심 주제
               </Link>
             </li>
             <li>
-              <Link to={userInfo.name ? "/MypageScrap" : "/login"}>
+              <Link to={userInfo.username ? "/MypageScrap" : "/login"}>
                 스크랩한 뉴스
               </Link>
             </li>

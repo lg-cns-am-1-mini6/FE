@@ -14,7 +14,7 @@ import { useState } from "react";
 import LogoutHandler from "./components/LogoutHandler.jsx";
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ name: "null", email: null });
+  const [userInfo, setUserInfo] = useState({ name: null, email: null });
 
   return (
     <UserContext.Provider value={{ userInfo, setUserInfo }}>

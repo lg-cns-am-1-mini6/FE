@@ -46,15 +46,17 @@ export default function BasicPage() {
           <button onClick={handleSearch}>🔍</button>
         </div>
         <div className="basic-hashtags">
-          {!userInfo.name && (
+          {!userInfo.username && (
             <>
               <p>#로그인_시_다양한_기능을_이용할_수_있습니다</p>
               <p>#로그인_버튼은_우측_상단에_있어요!</p>
             </>
           )}
-          {userInfo.name && (
+          {userInfo.username && (
             <>
-              <p>{userInfo.name}님은 이런 검색어를 #가장_많이 찾아보셨어요!</p>
+              <p>
+                {userInfo.username}님은 이런 검색어를 #가장_많이 찾아보셨어요!
+              </p>
               <p>
                 {hashtags.map((tag, i) => (
                   <span key={i}>#{tag} </span>

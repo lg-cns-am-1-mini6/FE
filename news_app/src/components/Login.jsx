@@ -20,8 +20,15 @@ export default function Login() {
   };
 
   const testLogin = () => {
-    const userData = { name: "고길동", email: "mrgo@example.com" };
-    setUserInfo(userData);
+    const fetchUserData = () => {
+      fetch("/scrap_mock.json")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.data);
+          setUserInfo(data.data);
+        });
+    };
+    fetchUserData();
     nav("/");
   };
 
