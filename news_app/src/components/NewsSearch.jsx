@@ -124,11 +124,6 @@ const NewsSearch = () => {
           />
           <button onClick={handleSearch}>🔍</button>
         </div>
-        <div className="search-hashtags">
-          <span>#검색 결과가 어떤가요?</span>
-          <button className="like-btn">✔️ 마음에 들어요</button>
-          <button className="like-btn">❌ 다시 추천해주세요</button>
-        </div>
         <div className="news-list">
           {currentArticles.map((item, index) => (
             <div key={index} className="news-card">
