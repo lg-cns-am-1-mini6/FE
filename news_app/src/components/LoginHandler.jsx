@@ -1,5 +1,3 @@
-// import axios from "axios";
-
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
@@ -27,12 +25,15 @@ export default function LoginHandler() {
       // .post(`/auth/${domain}/sign-in?code=${code}`)
       .then((res) => {
         console.log(`코드 전송 완료: ${res.data.message}`);
-        // 로그인 성공 후 동작해야 할 코드
-        // userInfo가 아니라 토큰인가...?
+        // 토큰 저장
+        const accessToken = res.headers.accessToken;
+        localStorage.setItem("accessToken", accessToken);
+        // TODO : 토큰으로 유저 정보 가져오기
+        // 일단은 하드코딩
         const { setUserInfo } = useContext(UserContext);
-        const userData = { name: "고길동", email: "mrgo@example.com" };
-        setUserInfo(userData);
-        window.location.href = "/";
+        setUserInfo({ username: "팜하니" });
+
+        nav("/");
       })
       .catch((err) => console.log(`코드 전송 실패 ${err}`));
   } catch (error) {
