@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./BasicPage.css";
-import Footer from "./Footer";
+import { UserContext } from "./UserContext";
 
 export default function BasicPage() {
-  const [username, setUsername] = useState("hong");
-  const [login, setLogin] = useState(false);
+  const { userInfo } = useContext(UserContext);
   const [query, setQuery] = useState("");
+  console.log({ userInfo });
+  // TODO: username 등으로 해시태그 가져오기
   const [hashtags, setHashtags] = useState([
     "예시키워드",
     "예시키워드",
@@ -31,19 +32,19 @@ export default function BasicPage() {
           <button>🔍</button>
         </div>
         <div className="basic-hashtags">
-          {!login && (
+          {!userInfo.name && (
             <>
               <p>#로그인_시_다양한_기능을_이용할_수_있습니다</p>
               <p>#로그인_버튼은_우측_상단에_있어요!</p>
             </>
           )}
 
-          {login && (
+          {userInfo.name && (
             <>
-              <p>{username}님은 이런 검색어를 #가장_많이 찾아보셨어요!</p>
+              <p>{userInfo.name}님은 이런 검색어를 #가장_많이 찾아보셨어요!</p>
               <p>
                 {hashtags.map((tag, i) => (
-                  <span>#{tag} </span>
+                  <span key={i}>#{tag} </span>
                 ))}
               </p>
             </>

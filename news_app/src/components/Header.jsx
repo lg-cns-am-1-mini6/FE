@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 const Header = () => {
-  const [login, setLogin] = useState(false);
+  const { userInfo } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="header">
@@ -17,8 +18,16 @@ const Header = () => {
         </Link>
       </span>
       <nav className="header-btn">
-        {login && <button onClick={() => setLogin(!login)}>Logout</button>}
-        {!login && (
+        {userInfo.name && (
+          <Link
+            to="/logout"
+            className="header-btn"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            LOG OUT
+          </Link>
+        )}
+        {!userInfo.name && (
           <Link
             to="/login"
             className="header-btn"

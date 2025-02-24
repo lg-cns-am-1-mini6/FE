@@ -1,6 +1,8 @@
 // import axios from "axios";
 
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
 
 export default function LoginHandler() {
   try {
@@ -25,14 +27,18 @@ export default function LoginHandler() {
       // .post(`/auth/${domain}/sign-in?code=${code}`)
       .then((res) => {
         console.log(`코드 전송 완료: ${res}`);
+        // 로그인에 성공해야 동작하는 코드 (나중에 수정)
+        const { setUserInfo } = useContext(UserContext);
+        const userData = { name: "고길동", email: "mrgo@example.com" };
+        setUserInfo(userData);
+        window.location.href = "/";
       })
       .catch((err) => console.log(`코드 전송 실패 ${err}`));
   } catch (error) {
     console.log(`로그인 실패: ${error}`);
   }
 
-  //window.location.href = "/";
-
+  // 안보이겠지만 혹시나...
   return (
     <div style={{ height: "50%", marginTop: "20%" }}>
       <h1>로그인 리다이렉션 중 ... </h1>
