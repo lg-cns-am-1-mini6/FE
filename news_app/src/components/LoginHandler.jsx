@@ -26,8 +26,9 @@ export default function LoginHandler() {
       .post(`http://localhost:8080/auth/${domain}/sign-in?code=${code}`)
       // .post(`/auth/${domain}/sign-in?code=${code}`)
       .then((res) => {
-        console.log(`코드 전송 완료: ${res}`);
-        // 로그인에 성공해야 동작하는 코드 (나중에 수정)
+        console.log(`코드 전송 완료: ${res.data.message}`);
+        // 로그인 성공 후 동작해야 할 코드
+        // userInfo가 아니라 토큰인가...?
         const { setUserInfo } = useContext(UserContext);
         const userData = { name: "고길동", email: "mrgo@example.com" };
         setUserInfo(userData);

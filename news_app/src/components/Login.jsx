@@ -20,15 +20,17 @@ export default function Login() {
   };
 
   const testLogin = () => {
-    const fetchUserData = () => {
-      fetch("/scrap_mock.json")
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data.data);
-          setUserInfo(data.data);
-        });
-    };
-    fetchUserData();
+    fetch("/scrap_mock.json")
+      .then((res) => {
+        console.log(res.headers);
+        const accessToken = `MY_TEST_TOKEN`;
+        localStorage.setItem("accessToken", accessToken);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data.data);
+        setUserInfo(data.data);
+      });
     nav("/");
   };
 

@@ -14,7 +14,15 @@ import { useState } from "react";
 import LogoutHandler from "./components/LogoutHandler.jsx";
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ name: null, email: null });
+  const [userInfo, setUserInfo] = useState({ name: null });
+  if (localStorage.getItem("accessToken") !== null) {
+    // TODO: 액세스 토큰으로 유저 정보 가져오기
+
+    // 일단은 mock data 활용
+    fetch("/scrap_mock.json")
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data.data));
+  }
 
   return (
     <UserContext.Provider value={{ userInfo, setUserInfo }}>
