@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorPopup from "./Error";
 import "./MypageScrap.css";
+import { UserContext } from "./UserContext";
 
 function ScrapCard({ articleId, title, content, link, onDelete }) {
   return (
@@ -23,7 +24,7 @@ function ScrapCard({ articleId, title, content, link, onDelete }) {
 }
 
 export default function MypageScrap() {
-  const [username, setUsername] = useState("");
+  const { userInfo } = useContext(UserContext);
   const [newslist, setNewslist] = useState([]);
   const [error, setError] = useState(null); // 오류 상태
   const navigate = useNavigate();
@@ -32,20 +33,18 @@ export default function MypageScrap() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const currentUserId = "member1";
-
   const fetchScrapData = () => {
+    const token = localStorage.getItem("accessToken");
     axios
       .get("/api/article/scrap", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer your_access_token",
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         const data = response.data;
         if (data.success) {
-          setUsername(data.data.username);
           setNewslist(data.data.articles);
           if (data.data.articles.length === 0) {
             setError({ code: 404, message: "스크랩한 기사가 없습니다!" });
@@ -94,15 +93,18 @@ export default function MypageScrap() {
   };
 
   useEffect(() => {
-    fetchScrapData();
+    // 지금은 하드코딩...
+    setNewslist(userInfo.articles);
+    //fetchScrapData();
   }, []);
 
   const handleDelete = (articleId) => {
+    const token = localStorage.getItem("accessToken");
     axios
       .delete("/api/article/scrap", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer your_access_token",
+          Authorization: `Bearer ${token}`,
         },
         data: { articleId },
       })
@@ -112,7 +114,8 @@ export default function MypageScrap() {
         } else {
           setError({
             code: 500,
-            message: response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
+            message:
+              response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
           });
           console.error("스크랩 삭제에 실패했습니다.");
         }
@@ -127,7 +130,7 @@ export default function MypageScrap() {
     <>
       <header className="mypage-header">
         <h1>MY PAGE</h1>
-        <p>{username && `${username}님, 안녕하세요`}</p>
+        <p>{userInfo.username && `${userInfo.username}님, 안녕하세요`}</p>
       </header>
       <br />
 

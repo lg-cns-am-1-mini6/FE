@@ -7,6 +7,7 @@ export default function LogoutHandler() {
   const nav = useNavigate();
   const { setUserInfo } = useContext(UserContext);
   useEffect(() => {
+    // 테스트 때문에 밖으로 뺌
     setUserInfo({ name: null });
     localStorage.removeItem("accessToken");
     nav("/");
@@ -16,7 +17,9 @@ export default function LogoutHandler() {
       .then((res) => {
         console.log(res.data.message);
         // 로그아웃 후 해야 할 일...
+        setUserInfo({ name: null });
         localStorage.removeItem("accessToken");
+        nav("/");
       })
       .catch((err) => {
         console.log(`로그아웃 요청 실패: ${err}`);

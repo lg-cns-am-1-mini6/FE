@@ -84,7 +84,7 @@
 
 .custom-btn-container {
   text-align: center;
-  margin: 2rem 0;
+  margin: 1rem 0 5rem 0;
 }
 
 .custom-btn {
@@ -106,7 +106,7 @@
   display: flex;
   justify-content: flex-end;
   width: 50%;
-  margin:auto auto 5rem auto;
+  margin: auto auto 5rem auto;
 }
 
 .scrap-buttons button {
@@ -125,7 +125,7 @@
 
 .scrap-buttons button:last-child {
   background-color: var(--light-p-color);
-  color:navy;
+  color: navy;
 }
 
 .scrap-buttons button:hover {
