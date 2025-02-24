@@ -34,6 +34,7 @@ export default function MypageScrap() {
   const currentUserId = "member1";
 
   // 백엔드 API (/api/article/scrap)로부터 스크랩 기사 조회
+  // "/scrap_mock.json" mock data로 확인 가능
   const fetchScrapData = () => {
     axios
       .get("/api/article/scrap", {

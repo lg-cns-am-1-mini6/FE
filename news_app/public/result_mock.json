@@ -3,22 +3,34 @@
   "status": 200,
   "data": [
     {
-      "title": "AI가 바꾸는 뉴스 산업의 미래",
-      "link": "https://n.news.naver.com/mnews/article/001/0001234567",
-      "description": "AI 기술이 뉴스 생산과 유통에 미치는 영향에 대해 다룬 기사.",
-      "pubDate": "Sun, 18 Feb 2024 10:30:00 +0900"
+      "title": "첫 번째 뉴스 제목",
+      "link": "https://example.com/article1",
+      "description": "첫 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-24"
     },
     {
-      "title": "챗GPT, 언론사의 새로운 도구로 자리 잡나",
-      "link": "https://n.news.naver.com/mnews/article/002/0002345678",
-      "description": "최신 인공지능 기술을 활용한 언론 보도 방식에 대한 기사.",
-      "pubDate": "Sun, 18 Feb 2024 09:45:00 +0900"
+      "title": "두 번째 뉴스 제목",
+      "link": "https://example.com/article2",
+      "description": "두 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-23"
     },
     {
-      "title": "블록체인 기술, 투명한 언론 보도의 미래를 열다",
-      "link": "https://n.news.naver.com/mnews/article/003/0003456789",
-      "description": "블록체인 기술이 언론의 투명성을 어떻게 개선할 수 있는지 분석한 기사.",
-      "pubDate": "Sun, 18 Feb 2024 11:15:00 +0900"
+      "title": "세 번째 뉴스 제목",
+      "link": "https://example.com/article3",
+      "description": "세 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-22"
+    },
+    {
+      "title": "네 번째 뉴스 제목",
+      "link": "https://example.com/article4",
+      "description": "네 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-21"
+    },
+    {
+      "title": "다섯 번째 뉴스 제목",
+      "link": "https://example.com/article5",
+      "description": "다섯 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-20"
     }
   ],
   "timestamp": "2024-02-18T12:00:00+09:00"
