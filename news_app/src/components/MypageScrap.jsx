@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./MypageScrap.css";
 
-function ScrapCard({ title, content, onDelete }) {
+function ScrapCard({ articleId, title, content, link, onDelete }) {
   return (
     <div className="card-box">
       <div className="card-text">
-        <h2><a>{title}</a></h2>
+        <h2>
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            {title}
+          </a>
+        </h2>
         <p>{content}</p>
       </div>
-      <button className="card-delete-btn" onClick={onDelete}>
+      <button className="card-delete-btn" onClick={() => onDelete(articleId)}>
         X
       </button>
     </div>
@@ -28,60 +33,85 @@ export default function MypageScrap() {
   // 현재 로그인한 사용자 id (추후 인증 방식에 따라 동적으로 변경 가능)
   const currentUserId = "member1";
 
-  // mock data에서 현재 사용자의 스크랩 기사 목록을 불러오는 함수
+  // 백엔드 API (/api/article/scrap)로부터 스크랩 기사 조회
   const fetchScrapData = () => {
-    fetch("/result_mock.json")
-      .then((res) => res.json())
-      .then((data) => {
-        // members 배열에서 현재 사용자 정보 추출
-        const currentUser = data.members.find((m) => m.id === currentUserId);
-        if (currentUser) {
-          setUsername(currentUser.username);
-        }
-        // newsScraps에서 현재 사용자의 스크랩 데이터 필터링
-        const userScraps = data.newsScraps.filter(
-          (scrap) => scrap.user_id === currentUserId
-        );
-        // 각 스크랩에 대해 newsArticles에서 일치하는 기사를 찾아 title과 description을 추출
-        const scrapArticles = userScraps
-          .map((scrap) => {
-            const article = data.newsArticles.find(
-              (art) => art.news_id === scrap.news_id
-            );
-            if (article) {
-              return {
-                title: article.title,
-                content: article.description,
-              };
-            }
-            return null;
-          })
-          .filter((item) => item !== null);
-        setNewslist(scrapArticles);
+    axios
+      .get("/api/article/scrap", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer your_access_token",
+        },
       })
-      .catch((err) => console.error("Error loading mock data", err));
+      .then((response) => {
+        const data = response.data;
+        if (data.success) {
+          setUsername(data.data.username);
+          setNewslist(data.data.articles);
+        } else {
+          console.error("스크랩 데이터를 불러오지 못했습니다.");
+        }
+      })
+      .catch((error) =>
+        console.error("스크랩 데이터 로드 중 오류 발생", error)
+      );
   };
 
-  // 컴포넌트 마운트 시 데이터 fetch
   useEffect(() => {
     fetchScrapData();
   }, []);
 
-  // 카드 삭제 처리
-  const handleDelete = (index) => {
-    setNewslist(newslist.filter((_, i) => i !== index));
+  // 카드 삭제 처리 (articleId를 기준으로 삭제)
+  const handleDelete = (articleId) => {
+    axios
+      .delete("/api/article/scrap", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer your_access_token",
+        },
+        data: { articleId },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          setNewslist(newslist.filter((item) => item.articleId !== articleId));
+        } else {
+          console.error("스크랩 삭제에 실패했습니다.");
+        }
+      })
+      .catch((error) =>
+        console.error("스크랩 삭제 중 오류 발생", error)
+      );
   };
 
-  // "원래대로" 버튼 클릭 시 mock data 재요청
+  // "원래대로" 버튼 클릭 시 백엔드에서 최신 스크랩 데이터 재요청
   const resetList = () => {
     console.log("원래대로 버튼 클릭");
     fetchScrapData();
   };
 
-  // "수정사항 저장" 버튼: 변경된 스크랩 기사 목록 저장 (서버 전송 시뮬레이션)
+  // "수정사항 저장" 버튼 클릭 시 현재 남아있는 스크랩의 articleId들을 백엔드에 전달
   const saveChanges = () => {
-    console.log("변경사항 저장 및 서버 전송");
-    // 서버 전송 로직 추가 가능
+    const updatedArticleIds = newslist.map((item) => item.articleId);
+    axios
+      .put(
+        "/api/article/scrap",
+        { articleId: updatedArticleIds },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer your_access_token",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          console.log("수정사항이 저장되었습니다.");
+        } else {
+          console.error("수정사항 저장에 실패했습니다.");
+        }
+      })
+      .catch((error) =>
+        console.error("수정사항 저장 중 오류 발생", error)
+      );
   };
 
   return (
@@ -103,12 +133,14 @@ export default function MypageScrap() {
       {/* 기사 카드 리스트 */}
       <div className="card-list">
         {newslist.length > 0 ? (
-          newslist.map((news, index) => (
+          newslist.map((news) => (
             <ScrapCard
-              key={index}
+              key={news.articleId}
+              articleId={news.articleId}
               title={news.title}
               content={news.content}
-              onDelete={() => handleDelete(index)}
+              link={news.link}
+              onDelete={handleDelete}
             />
           ))
         ) : (
@@ -136,3 +168,5 @@ export default function MypageScrap() {
     </>
   );
 }
+
+// 원래대로 버튼, 수정사항 저장 버튼 어떻게 할지 정하기
