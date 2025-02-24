@@ -4,13 +4,8 @@ import { UserContext } from "./UserContext";
 
 export default function MypageProfile() {
   const { userInfo } = useContext(UserContext);
-
-  // const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [image, setImage] = useState(null);
-
-  // // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
-  // const currentUserId = "member1";
+  const [username, setUsername] = useState(userInfo.username);
+  const [email, setEmail] = useState(userInfo.email);
 
   // // mock data에서 현재 사용자의 프로필 정보를 가져오는 함수
   // const fetchProfileData = () => {
@@ -80,8 +75,19 @@ export default function MypageProfile() {
         </div>
         <div className="profile-info">
           <div className="profile-content">
-            <p>{userInfo.username}</p>
-            <p>{userInfo.email}</p>
+            <div>
+              <span>유저ID</span>
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              ></input>
+            </div>
+            <span>e-mail</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
           </div>
           <div>
             <label htmlFor="fileInput" className="profile-button">
