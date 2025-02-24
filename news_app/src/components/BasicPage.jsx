@@ -49,9 +49,6 @@ export default function BasicPage() {
               </p>
             </>
           )}
-          {/* <button onClick={() => setLogin(!login)}>
-            로그인 여부 토글 (테스트용)
-          </button> */}
         </div>
       </div>
     </div>

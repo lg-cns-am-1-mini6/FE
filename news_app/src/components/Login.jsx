@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { setUserInfo } = useContext(UserContext);
-  //const navigate = useNavigate();
+  const nav = useNavigate();
 
   const googleLogin = () => {
     const redirectUrl = `http://localhost:5173/login/oauth2/code/google`;
@@ -22,7 +22,7 @@ export default function Login() {
   const testLogin = () => {
     const userData = { name: "고길동", email: "mrgo@example.com" };
     setUserInfo(userData);
-    window.location.href = "/";
+    nav("/");
   };
 
   useEffect(() => {
