@@ -34,6 +34,10 @@
   font-family: "Michroma", sans-serif;
 }
 
+.header-btn :link {
+  color: var(--main-bg-color);
+}
+
 .header-btn :visited {
   color: var(--main-bg-color);
 }
@@ -70,6 +74,10 @@
 .dropdown-menu li {
   padding: 8px 20px;
   border-bottom: 1px solid var(--light-color);
+}
+
+.dropdown-menu li a:link {
+  color: var(--main-color);
 }
 
 .dropdown-menu li a:visited {
