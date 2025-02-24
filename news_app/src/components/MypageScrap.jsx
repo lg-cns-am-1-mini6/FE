@@ -47,12 +47,10 @@ export default function MypageScrap() {
         if (data.success) {
           setUsername(data.data.username);
           setNewslist(data.data.articles);
-          // 만약 스크랩한 기사가 없으면 404 오류 (스크랩 기사 없음)
           if (data.data.articles.length === 0) {
             setError({ code: 404, message: "스크랩한 기사가 없습니다!" });
           }
         } else {
-          // 예시: 로그인 안 한 경우(404) 혹은 권한 부족(401)
           if (data.code === 401) {
             setError({ code: 401, message: "관리자 권한이 필요합니다." });
           } else if (data.code === 404 && data.data?.reason === "NotLoggedIn") {
@@ -75,8 +73,6 @@ export default function MypageScrap() {
           if (error.response.status === 401) {
             setError({ code: 401, message: "관리자 권한이 필요합니다." });
           } else if (error.response.status === 404) {
-            // 예시로 로그인 에러와 스크랩 기사 없음 두 경우를 구분
-            // (실제 상황에서는 백엔드 응답에 따라 분기)
             if (!currentUserId) {
               setError({
                 code: 404,
@@ -127,41 +123,6 @@ export default function MypageScrap() {
       });
   };
 
-  const resetList = () => {
-    console.log("원래대로 버튼 클릭");
-    fetchScrapData();
-  };
-
-  const saveChanges = () => {
-    const updatedArticleIds = newslist.map((item) => item.articleId);
-    axios
-      .put(
-        "/api/article/scrap",
-        { articleId: updatedArticleIds },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer your_access_token",
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data.success) {
-          console.log("수정사항이 저장되었습니다.");
-        } else {
-          setError({
-            code: 500,
-            message: response.data.data?.reason || "수정사항 저장에 실패했습니다.",
-          });
-          console.error("수정사항 저장에 실패했습니다.");
-        }
-      })
-      .catch((error) => {
-        setError({ code: 500, message: "수정사항 저장 중 오류 발생" });
-        console.error("수정사항 저장 중 오류 발생", error);
-      });
-  };
-
   return (
     <>
       <header className="mypage-header">
@@ -202,11 +163,6 @@ export default function MypageScrap() {
         >
           맞춤 추천 기사 보러 가기
         </button>
-      </div>
-
-      <div className="scrap-buttons">
-        <button onClick={resetList}>원래대로</button>
-        <button onClick={saveChanges}>수정사항 저장</button>
       </div>
 
       {/* 오류 팝업 */}
