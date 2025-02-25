@@ -47,7 +47,11 @@ export default function MypageProfile() {
       })
       .then((res) => {
         console.log("응답 데이터:", res.data);
-        handleApiResponse(res); // 공통 로직으로 처리
+        if (res.data.success) {
+          // ...
+        } else {
+          reissueToken(res);
+        }
       })
       .catch((err) => console.log("요청 에러:", err));
   };

@@ -112,7 +112,7 @@ export default function MypageKeyword() {
     <>
       <header className="mypage-header">
         <h1>MY PAGE</h1>
-        <p>{username}님, 안녕하세요</p>
+        <p>{userInfo.username}님, 안녕하세요</p>
       </header>
       <br />
       <div className="text-art">

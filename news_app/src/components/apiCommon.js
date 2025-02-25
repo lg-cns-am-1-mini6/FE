@@ -7,15 +7,10 @@ import axios from "axios";
  *
  * @param {Object} response - axios 응답 객체
  */
-export const handleApiResponse = (response) => {
-  if (response.data.success) {
-    // 성공 시
-    console.log(response.data.data.message);
-  } else if (response.data.status === 401) {
-    // 토큰 만료 시
-    axios
-      .post(`/auth/reissue`, null, { withCredentials: true })
-      .then((res) => console.log("토큰 재발급:", res))
-      .catch((err) => console.log("토큰 재발급 에러:", err));
-  }
+export const reissueToken = (response) => {
+  // 토큰 만료 시
+  axios
+    .post(`/auth/reissue`, null, { withCredentials: true })
+    .then((res) => console.log("토큰 재발급:", res))
+    .catch((err) => console.log("토큰 재발급 에러:", err));
 };
