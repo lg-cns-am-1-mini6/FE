@@ -22,10 +22,9 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
+
+    // 테스트용
     getImageUrl();
-    // 로그인 되어있으면 imageUrl이 있는지 확인 후 이미지 보여줌
-    // if (!userInfo.imageUrl) {
-    // }
   }, [accesstoken]);
 
   const handleImageChange = (e) => {
@@ -63,7 +62,6 @@ export default function MypageProfile() {
 
   const handleSave = () => {
     console.log("변경사항 저장");
-    // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
     const userData = { name: username, imageUrl: image };
     console.log(userData);
     axios
