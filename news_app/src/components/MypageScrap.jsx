@@ -107,9 +107,9 @@ export default function MypageScrap() {
 
   useEffect(() => {
     // 지금은 하드코딩...
-    setNewslist(userInfo.articles);
+    setNewslist(userInfo.articles || []);
     //fetchScrapData();
-  }, []);
+  }, [userInfo.articles]);
 
   const handleDelete = (articleId) => {
     const token = localStorage.getItem("accessToken");
