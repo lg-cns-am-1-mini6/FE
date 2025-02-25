@@ -14,14 +14,14 @@ export default function LogoutHandler() {
     const accesstoken = localStorage.getItem("accesstoken");
     console.log(`로그아웃 요청: Bearer ${accesstoken}`);
     axios
-      .post(`/auth/sign-out`, {
+      .post(`/auth/sign-out`, null, {
         headers: { Authorization: `Bearer ${accesstoken}` },
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
         // 로그아웃 후 해야 할 일...
-        //setUserInfo({ username: null });
+        setUserInfo({ username: null });
         localStorage.removeItem("accesstoken");
         // 리프레시 토큰 (쿠키) 삭제
         nav("/");
