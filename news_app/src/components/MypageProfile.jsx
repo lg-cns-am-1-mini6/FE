@@ -6,11 +6,10 @@ import axios from "axios";
 import { reissueToken } from "./apiCommon"; // 공통 로직 import
 
 export default function MypageProfile() {
-  const { userInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(userInfo.username);
   const [image, setImage] = useState(null);
-  const [email, setEmail] = useState(userInfo.email);
   const accesstoken = localStorage.getItem("accesstoken");
 
   // 로그인 여부 체크
@@ -23,10 +22,10 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
-
+    getImageUrl();
     // 로그인 되어있으면 imageUrl이 있는지 확인 후 이미지 보여줌
-    if (!userInfo.imageUrl) {
-    }
+    // if (!userInfo.imageUrl) {
+    // }
   }, [accesstoken]);
 
   const handleImageChange = (e) => {
@@ -37,6 +36,29 @@ export default function MypageProfile() {
     } else {
       console.log("파일 선택 오류");
     }
+  };
+
+  const getImageUrl = () => {
+    axios
+      .post(
+        `/image/presigned-url`,
+        { imageName: userInfo.email },
+        {
+          headers: { Authorization: `Bearer ${accesstoken}` },
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log("presigned Url: ", res.data.data.imageUrl);
+        // 위에꺼 정상적으로 왔으면
+        // 이미지 보내기...
+        // const imageData = image;
+        // axios
+        //   .put(res.data.data.imageUrl, imageData)
+        //   .then((res) => console.log(res))
+        //   .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleSave = () => {
@@ -55,6 +77,10 @@ export default function MypageProfile() {
           console.log(
             `변경사항 전송 완료: ${res.data.data.email}, ${res.data.data.name}, ${res.data.data.imageUrl}`
           );
+          setUserInfo({
+            username: res.data.data.name,
+            imageUrl: res.data.data.imageUrl,
+          });
         } else if (res.data.status == 401) {
           reissueToken(res);
         }
@@ -99,12 +125,7 @@ export default function MypageProfile() {
               />
             </div>
             <span>e-mail</span>
-            <input
-              readOnly
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <input readOnly type="email" value={userInfo.email} />
           </div>
           <div>
             <label htmlFor="fileInput" className="profile-button">
