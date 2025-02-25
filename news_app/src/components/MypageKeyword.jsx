@@ -20,6 +20,7 @@ export default function MypageKeyword() {
   const [username, setUsername] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
+  const accesstoken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -27,7 +28,7 @@ export default function MypageKeyword() {
 
   // 로그인 여부 체크
   useEffect(() => {
-    if (!userInfo.username) {
+    if (!accesstoken) {
       setError({
         code: 404,
         message: "로그인 해주세요",
@@ -35,7 +36,7 @@ export default function MypageKeyword() {
         redirectUrl: "/login",
       });
     }
-  }, [userInfo.username]);
+  }, [accesstoken]);
 
   // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
   const currentUserId = "member1";

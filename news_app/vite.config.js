@@ -10,6 +10,7 @@ export default defineConfig({
       "/auth": "https://newjeans.site",
       "/user": "https://newjeans.site",
       "/article": "https://newjeans.site",
+      "/image": "https://newjeans.site",
     }
   }
 })

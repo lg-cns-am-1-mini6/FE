@@ -6,6 +6,7 @@ import { UserContext } from "./UserContext";
 const Header = () => {
   const { userInfo } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
+  const accesstoken = localStorage.getItem("accesstoken");
   return (
     <header className="header">
       <span
@@ -18,7 +19,7 @@ const Header = () => {
         </Link>
       </span>
       <nav className="header-btn">
-        {userInfo.username && (
+        {accesstoken && (
           <Link
             to="/logout"
             className="header-btn"
@@ -27,7 +28,7 @@ const Header = () => {
             LOG OUT
           </Link>
         )}
-        {!userInfo.username && (
+        {!accesstoken && (
           <Link
             to="/login"
             className="header-btn"
@@ -48,19 +49,13 @@ const Header = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <li>
-              <Link to="/MypageProfile">
-                내 정보
-              </Link>
+              <Link to="/MypageProfile">내 정보</Link>
             </li>
             <li>
-              <Link to="/MypageKeyword">
-                관심 주제
-              </Link>
+              <Link to="/MypageKeyword">관심 주제</Link>
             </li>
             <li>
-              <Link to="/MypageScrap">
-                스크랩한 뉴스
-              </Link>
+              <Link to="/MypageScrap">스크랩한 뉴스</Link>
             </li>
           </ul>
         </div>

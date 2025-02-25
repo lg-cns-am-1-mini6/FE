@@ -3,7 +3,7 @@ import "./MypageProfile.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 import axios from "axios";
-import { handleApiResponse } from "./apiCommon"; // 공통 로직 import
+import { reissueToken } from "./apiCommon"; // 공통 로직 import
 
 export default function MypageProfile() {
   const { userInfo } = useContext(UserContext);
@@ -23,13 +23,16 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
+
+    // 로그인 되어있으면 imageUrl이 있는지 확인 후 이미지 보여줌
+    if (!userInfo.imageUrl) {
+    }
   }, [accesstoken]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // 파일 선택 시, 로컬 미리보기를 위해 URL을 생성
-      console.log(URL.createObjectURL(file));
+      console.log(typeof file);
       setImage(URL.createObjectURL(file));
     } else {
       console.log("파일 선택 오류");
@@ -49,7 +52,7 @@ export default function MypageProfile() {
         console.log("응답 데이터:", res.data);
         if (res.data.success) {
           // ...
-        } else {
+        } else if (res.data.status == 401) {
           reissueToken(res);
         }
       })
@@ -78,7 +81,7 @@ export default function MypageProfile() {
             className="profile-image"
             style={{
               backgroundImage: userInfo.image
-                ? `url(${userInfo.image})`
+                ? `url(${userInfo.imageUrl})`
                 : "none",
             }}
           ></div>

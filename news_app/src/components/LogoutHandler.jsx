@@ -15,7 +15,7 @@ export default function LogoutHandler() {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
+        // 액세스 토큰 유효성 확인
         setUserInfo({ username: null });
         localStorage.removeItem("accesstoken");
         nav("/");

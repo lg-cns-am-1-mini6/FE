@@ -24,13 +24,10 @@ function App() {
       axios
         .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
         .then((res) => {
-          console.log(res.data);
-          console.log(res.data.data);
           setUserInfo({
-            username: res.data.data.name
-              ? res.data.data.name
-              : res.data.data.email,
+            username: res.data.data.name,
             email: res.data.data.email,
+            imageUrl: res.data.data.imageUrl,
           });
         })
         .catch((err) => {
