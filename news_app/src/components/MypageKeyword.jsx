@@ -108,7 +108,7 @@ export default function MypageKeyword() {
     // 추후 서버 API 연동 구현
   };
 
-  return (
+  return (  
     <>
       <header className="mypage-header">
         <h1>MY PAGE</h1>
