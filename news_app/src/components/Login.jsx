@@ -48,7 +48,6 @@ export default function Login() {
         <div className="login-buttons">
           <button onClick={kakaoLogin}>카카오 계정 로그인</button>
           <button onClick={googleLogin}>구글 계정 로그인</button>
-          <button onClick={testLogin}>로그인 테스트</button>
         </div>
       </div>
     </>

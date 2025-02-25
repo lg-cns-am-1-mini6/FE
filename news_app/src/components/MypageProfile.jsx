@@ -37,9 +37,6 @@ export default function MypageProfile() {
   const handleSave = () => {
     console.log("변경사항 저장");
     // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
-    // TODO: 토큰 유효성, 재요청
-    // ,,,,,
-
     const userData = { username: username, email: email };
     axios
       .post(`/user`, userData, {

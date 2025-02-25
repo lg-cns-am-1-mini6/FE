@@ -25,4 +25,19 @@ export default function LogoutHandler() {
         console.log(err);
       });
   }, []);
+
+  return (
+    <div
+      style={{
+        height: "50%",
+        marginTop: "20%",
+        alignSelf: "center",
+        color: "var(--main-color)",
+        textAlign: "center",
+      }}
+    >
+      <h1>로그아웃 중... </h1>
+      <h2>잠시만 기다려주세요</h2>
+    </div>
+  );
 }

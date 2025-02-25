@@ -4,3 +4,9 @@
   margin-top: auto;
   background-color: var(--main-color);
 }
+
+.admin-container {
+  height: 10rem;
+  align-self: center;
+  width: 65%;
+}

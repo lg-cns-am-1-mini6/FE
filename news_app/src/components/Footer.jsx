@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 export default function Footer() {
@@ -8,6 +9,7 @@ export default function Footer() {
         <p>footer example</p>
         <p>footer example</p>
         <p>footer example</p>
+        <Link to="/admin">DO NOT TOUCH ME !!</Link>
       </footer>
     </>
   );

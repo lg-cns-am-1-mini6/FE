@@ -31,7 +31,7 @@ export default function LoginHandler() {
           .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
           .then((res) => {
             // TODO: 토큰 유효성, 재요청
-
+            // ,,,,,
             console.log(res.data.data);
             setUserInfo({
               username: res.data.data.name
@@ -50,8 +50,17 @@ export default function LoginHandler() {
   }, []);
 
   return (
-    <div style={{ height: "50%", marginTop: "20%" }}>
-      <h1>로그인 리다이렉션 중 ... </h1>
+    <div
+      style={{
+        height: "50%",
+        marginTop: "20%",
+        alignSelf: "center",
+        color: "var(--main-color)",
+        textAlign: "center",
+      }}
+    >
+      <h1>로그인 중 ... </h1>
+      <h2>잠시만 기다려주세요</h2>
     </div>
   );
 }

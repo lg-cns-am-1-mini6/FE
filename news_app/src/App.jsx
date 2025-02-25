@@ -13,6 +13,7 @@ import { UserContext } from "./components/UserContext.jsx";
 import { useEffect, useState } from "react";
 import LogoutHandler from "./components/LogoutHandler.jsx";
 import axios from "axios";
+import Admin from "./components/Admin.jsx";
 
 function App() {
   const [userInfo, setUserInfo] = useState({ username: null });
@@ -59,7 +60,7 @@ function App() {
             <Route path="/login/oauth2/code/kakao" element={<LoginHandler />} />
             <Route path="/login/oauth2/code/test" element={<LoginHandler />} />
             <Route path="/logout" element={<LogoutHandler />} />
-
+            <Route path="/admin" element={<Admin />} />
             {/* 에러 페이지 : 잘못된 경로도 포함해야 */}
           </Routes>
           <Footer />
