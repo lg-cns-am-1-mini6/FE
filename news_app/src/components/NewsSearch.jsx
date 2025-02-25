@@ -1,54 +1,43 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Header from "./Header";
 import axios from "axios";
 import ErrorPopup from "./Error";
 import "./NewsSearch.css";
 
 const NewsSearch = () => {
+  // URL 쿼리스트링에서 query 값을 읽어옴
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get("query") || "";
+
   const [news, setNews] = useState([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [currentPage, setCurrentPage] = useState(1);
-  const [error, setError] = useState(null); // 오류 상태
+  const [error, setError] = useState(null);
   const articlesPerPage = 10;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // mock 데이터 로드
+  // 페이지가 로드될 때 URL에 query가 있다면 자동으로 검색 실행
   useEffect(() => {
-    axios
-      .get("/result_mock.json")
-      .then((response) => {
-        if (response.data.success) {
-          setNews(response.data.data);
-        } else {
-          // 서버에서 전달한 오류 코드에 따라 팝업 표시 (예: 500 오류)
-          setError({
-            code: 500,
-            message: response.data.data?.reason || "서버 오류",
-          });
-        }
-      })
-      .catch((err) => {
-        // 네트워크 등 기타 오류 발생 시 500 오류로 처리
-        setError({ code: 500, message: "서버 오류" });
-        console.error("Error loading news:", err);
-      });
-  }, []);
+    if (initialQuery.trim() !== "") {
+      handleSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
 
   const handleSearch = () => {
-    // 빈 검색어 체크 (400 오류)
     if (query.trim() === "") {
       setError({ code: 400, message: "검색어를 입력해주세요!" });
       return;
     }
     axios
-      .get("/result_mock.json", { params: { query } })
+      .get("/newjeans.site/articles/search", { params: { query } })
       .then((response) => {
         if (response.data.success) {
           if (response.data.data.length === 0) {
-            // 검색 결과가 없을 경우 404 오류
             setError({ code: 404, message: "검색된 기사가 없습니다." });
           } else {
             setNews(response.data.data);
@@ -56,8 +45,6 @@ const NewsSearch = () => {
             console.log("검색어:", query);
           }
         } else {
-          // 백엔드에서 success가 false로 온 경우
-          // 오류 코드에 따라 처리 (예를 들어 500)
           setError({
             code: 500,
             message: response.data.data?.reason || "서버 오류",
@@ -65,7 +52,6 @@ const NewsSearch = () => {
         }
       })
       .catch((err) => {
-        // 에러 객체에서 status를 확인하여 500 오류 처리
         if (err.response && err.response.status === 500) {
           setError({ code: 500, message: "서버 오류" });
         } else {
@@ -75,7 +61,6 @@ const NewsSearch = () => {
       });
   };
 
-  // 스크랩 버튼 로직 (필요 시 오류 처리 추가 가능)
   const handleScrap = (item) => {
     const payload = {
       title: item.title,
@@ -84,7 +69,7 @@ const NewsSearch = () => {
       pubDate: item.pubDate,
     };
     axios
-      .post("/api/article/scrap", payload)
+      .post("/newjeans.site/articles/scrap", payload)
       .then((response) => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);
@@ -93,7 +78,10 @@ const NewsSearch = () => {
             code: 500,
             message: response.data.data?.reason || "스크랩 중 오류 발생",
           });
-          console.error("Scrap error:", response.data.data?.reason || "알 수 없는 오류");
+          console.error(
+            "Scrap error:",
+            response.data.data?.reason || "알 수 없는 오류"
+          );
         }
       })
       .catch((err) => {
@@ -129,7 +117,11 @@ const NewsSearch = () => {
             <div key={index} className="news-card">
               <div className="news-card-text">
                 <h2>
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     "{item.title}"
                   </a>
                 </h2>
@@ -143,7 +135,10 @@ const NewsSearch = () => {
         </div>
         {news.length > articlesPerPage && (
           <div className="pagination">
-            <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
               Prev
             </button>
             {Array.from({ length: totalPages }, (_, i) => (
@@ -155,13 +150,15 @@ const NewsSearch = () => {
                 {i + 1}
               </button>
             ))}
-            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
               Next
             </button>
           </div>
         )}
       </div>
-      {/* 오류 팝업 */}
       {error && (
         <ErrorPopup
           code={error.code}

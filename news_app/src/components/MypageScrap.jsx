@@ -49,7 +49,7 @@ export default function MypageScrap() {
   const fetchScrapData = () => {
     const token = localStorage.getItem("accessToken");
     axios
-      .get("/api/article/scrap", {
+      .get("/newjeans.site/articles/scrap", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export default function MypageScrap() {
   const handleDelete = (articleId) => {
     const token = localStorage.getItem("accessToken");
     axios
-      .delete("/api/article/scrap", {
+      .delete("/newjeans.site/articles/scrap", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
