@@ -1,13 +1,16 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginHandler() {
-  try {
+  const { setUserInfo } = useContext(UserContext);
+  const nav = useNavigate();
+
+  useEffect(() => {
     const url = new URL(window.location.href);
     const code = url.searchParams.get("code");
     let domain = "";
-
     if (url.pathname.includes("google")) {
       domain = "google";
     } else if (url.pathname.includes("kakao")) {
@@ -15,30 +18,47 @@ export default function LoginHandler() {
     } else {
       console.log("로그인 오류");
     }
-
-    console.log(
-      `POST 요청 URL : http://localhost:8080/auth/${domain}/sign-in?code=${code}`
-    );
-
+    console.log(`POST 요청 URL : /auth/${domain}/sign-in?code=${code}`);
     axios
-      .post(`http://localhost:8080/auth/${domain}/sign-in?code=${code}`)
-      // .post(`/auth/${domain}/sign-in?code=${code}`)
+      .post(`https://newjeans.site/auth/${domain}/sign-in?code=${code}`)
       .then((res) => {
-        console.log(`코드 전송 완료: ${res.data.message}`);
+        console.log(`코드 전송 완료 : ${res.data.data.message}`);
+        console.log(res.headers);
         // 토큰 저장
         const accessToken = res.headers.accessToken;
         localStorage.setItem("accessToken", accessToken);
-        // TODO : 토큰으로 유저 정보 가져오기
-        // 일단은 하드코딩
-        const { setUserInfo } = useContext(UserContext);
-        setUserInfo({ username: "팜하니" });
+
+        // 유저 정보 가져오기
+        console.log(`accessToken: ${accessToken}`);
+        axios
+          .get(`/user`, { Authorization: { Token: `Bearer ${accessToken}` } })
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+
+        // 일단 하드코딩...
+        setUserInfo({ username: "test-account" });
 
         nav("/");
       })
       .catch((err) => console.log(`코드 전송 실패 ${err}`));
-  } catch (error) {
-    console.log(`로그인 실패: ${error}`);
-  }
+  }, []);
+  // axios
+  //   .post(`https://newjeans.site//auth/${domain}/sign-in?code=${code}`)
+  //   .then((res) => {
+  //     console.log(`코드 전송 완료: ${res.data.message}`);
+  //     // 토큰 저장
+  //     const accessToken = res.headers.accessToken;
+  //     localStorage.setItem("accessToken", accessToken);
+
+  //     // 유저 정보 가져오기
+  //     // axios.get(`/api/user`).then(res=>console.log(data));
+
+  //     // 일단 하드코딩...
+  //     setUserInfo({ username: "test-account" });
+
+  //     nav("/");
+  //   })
+  //   .catch((err) => console.log(`코드 전송 실패 ${err}`));
 
   // 안보이겠지만 혹시나...
   return (

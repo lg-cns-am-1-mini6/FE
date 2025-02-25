@@ -6,7 +6,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://newjeans.site"
+      // "/api": "https://newjeans.site",
+      "/auth": "https://newjeans.site",
+      "/user": "https://newjeans.site",
     }
   }
 })
