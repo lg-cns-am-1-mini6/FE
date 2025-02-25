@@ -24,16 +24,27 @@ export default function LoginHandler() {
       .then((res) => {
         console.log(`코드 전송 완료 : ${res.data.data.message}`);
         console.log(res.headers);
+
         // 토큰 저장
-        const accessToken = res.headers.accessToken;
-        localStorage.setItem("accessToken", accessToken);
+        const accesstoken = res.headers.accesstoken;
+        localStorage.setItem("accesstoken", accesstoken);
+
+        console.log("유저 정보 가져오기");
 
         // 유저 정보 가져오기
-        console.log(`accessToken: ${accessToken}`);
+        console.log(`accesstoken: Bearer ${accesstoken}`);
         axios
-          .get(`/user`, { Authorization: { Token: `Bearer ${accessToken}` } })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+          .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
+          .then((res) => {
+            console.log(res.data.data);
+            setUserInfo({
+              username: res.data.data.email,
+              email: res.data.data.email,
+            });
+          })
+          .catch((err) => {
+            console.log("유저 정보 조회 실패", err);
+          });
 
         // 일단 하드코딩...
         setUserInfo({ username: "test-account" });
