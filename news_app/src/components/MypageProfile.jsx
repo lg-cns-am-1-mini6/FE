@@ -42,16 +42,19 @@ export default function MypageProfile() {
   const handleSave = () => {
     console.log("변경사항 저장");
     // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
-    const userData = { username: username, email: email };
+    const userData = { name: username, imageUrl: image };
+    console.log(userData);
     axios
-      .post(`/user`, userData, {
+      .patch(`/user`, userData, {
         headers: { Authorization: `Bearer ${accesstoken}` },
         withCredentials: true,
       })
       .then((res) => {
         console.log("응답 데이터:", res.data);
         if (res.data.success) {
-          // ...
+          console.log(
+            `변경사항 전송 완료: ${res.data.data.email}, ${res.data.data.name}, ${res.data.data.imageUrl}`
+          );
         } else if (res.data.status == 401) {
           reissueToken(res);
         }
@@ -97,6 +100,7 @@ export default function MypageProfile() {
             </div>
             <span>e-mail</span>
             <input
+              readOnly
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
