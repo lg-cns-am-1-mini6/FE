@@ -38,15 +38,22 @@ export default function MypageProfile() {
 
   const handleSave = () => {
     console.log("변경사항 저장");
+<<<<<<< HEAD
     const userData = { username: username, email: email };
+=======
+    // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
+    const userData = { name: username, imageUrl: image };
+    console.log(userData);
+>>>>>>> 5708e0085781f58708ba34b4128f401e4f1c0283
     axios
-      .post(`/user`, userData, {
+      .patch(`/user`, userData, {
         headers: { Authorization: `Bearer ${accesstoken}` },
         withCredentials: true,
       })
       .then((res) => {
         console.log("응답 데이터:", res.data);
         if (res.data.success) {
+<<<<<<< HEAD
           // 성공 처리 (필요시 추가 로직 구현)
           console.log("업데이트 성공!");
         } else if (res.data.status === 401) {
@@ -59,6 +66,13 @@ export default function MypageProfile() {
             .catch((err) => {
               console.error("토큰 재발급 실패:", err);
             });
+=======
+          console.log(
+            `변경사항 전송 완료: ${res.data.data.email}, ${res.data.data.name}, ${res.data.data.imageUrl}`
+          );
+        } else if (res.data.status == 401) {
+          reissueToken(res);
+>>>>>>> 5708e0085781f58708ba34b4128f401e4f1c0283
         }
       })
       .catch((err) => {
@@ -113,6 +127,7 @@ export default function MypageProfile() {
             </div>
             <span>e-mail</span>
             <input
+              readOnly
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

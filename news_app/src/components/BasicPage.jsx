@@ -1,17 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BasicPage.css";
-import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 import axios from "axios";
 
 export default function BasicPage() {
-  const { userInfo } = useContext(UserContext);
   const [query, setQuery] = useState("");
   const [newsList, setNewsList] = useState([]); // 백엔드에서 받아온 전체 뉴스 데이터
   const [currentPage, setCurrentPage] = useState(0); // 현재 보여줄 페이지 (0-index)
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const accesstoken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -34,7 +33,7 @@ export default function BasicPage() {
     }
 
     // 로그인한 경우: 백엔드에서 뉴스 기사 데이터를 받아와 페이지 내에 카드뉴스로 표시
-    if (userInfo.username) {
+    if (accesstoken) {
       axios
         .get("/article/search", { params: { query } }) //API는 나중에 다른걸로 수정
         .then((response) => {
@@ -101,7 +100,7 @@ export default function BasicPage() {
           <button onClick={handleSearch}>🔍</button>
         </div>
 
-        {userInfo.username ? (
+        {accesstoken ? (
           <>
             {newsList.length > 0 && (
               <>
