@@ -8,22 +8,27 @@ export default function LogoutHandler() {
   const { setUserInfo } = useContext(UserContext);
   useEffect(() => {
     // 테스트 때문에 밖으로 뺌
-    setUserInfo({ name: null });
-    localStorage.removeItem("accesstoken");
-    nav("/");
-
+    // setUserInfo({ username: null });
+    // localStorage.removeItem("accesstoken");
+    // nav("/");
+    const accesstoken = localStorage.getItem("accesstoken");
+    console.log(`로그아웃 요청: Bearer ${accesstoken}`);
     axios
-      .post(`/auth/sign-out`)
+      .post(`/auth/sign-out`, {
+        headers: { Authorization: `Bearer ${accesstoken}` },
+        withCredentials: true,
+      })
       .then((res) => {
-        console.log(res.data.message);
+        console.log(res);
         // 로그아웃 후 해야 할 일...
-        setUserInfo({ name: null });
+        //setUserInfo({ username: null });
         localStorage.removeItem("accesstoken");
         // 리프레시 토큰 (쿠키) 삭제
         nav("/");
       })
       .catch((err) => {
-        console.log(`로그아웃 요청 실패: ${err}`);
+        console.log(`로그아웃 요청 실패:`);
+        console.log(err);
       });
   }, []);
 }

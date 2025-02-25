@@ -20,7 +20,9 @@ export default function LoginHandler() {
     }
     console.log(`POST 요청 URL : /auth/${domain}/sign-in?code=${code}`);
     axios
-      .post(`https://newjeans.site/auth/${domain}/sign-in?code=${code}`)
+      .post(`/auth/${domain}/sign-in?code=${code}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(`코드 전송 완료 : ${res.data.data.message}`);
         console.log(res.headers);
