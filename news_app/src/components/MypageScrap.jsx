@@ -64,6 +64,8 @@ export default function MypageScrap() {
           }
         } else {
           if (data.code === 401) {
+            // TODO: 토큰 유효성, 재요청
+            // ,,,,,
             setError({ code: 401, message: "관리자 권한이 필요합니다." });
           } else if (data.code === 404 && data.data?.reason === "NotLoggedIn") {
             setError({

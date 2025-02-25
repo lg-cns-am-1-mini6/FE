@@ -9,6 +9,7 @@ export default defineConfig({
       // "/api": "https://newjeans.site",
       "/auth": "https://newjeans.site",
       "/user": "https://newjeans.site",
+      "/article": "https://newjeans.site",
     }
   }
 })

@@ -20,13 +20,15 @@ function App() {
   useEffect(() => {
     const accesstoken = localStorage.getItem("accesstoken");
     if (accesstoken !== null) {
-      // TODO: 액세스 토큰으로 유저 정보 가져오기
       axios
         .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
         .then((res) => {
+          console.log(res.data);
           console.log(res.data.data);
           setUserInfo({
-            username: res.data.data.email,
+            username: res.data.data.name
+              ? res.data.data.name
+              : res.data.data.email,
             email: res.data.data.email,
           });
         })

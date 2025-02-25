@@ -34,7 +34,7 @@ const NewsSearch = () => {
       return;
     }
     axios
-      .get("/newjeans.site/articles/search", { params: { query } })
+      .get("/article/search", { params: { query } })
       .then((response) => {
         if (response.data.success) {
           if (response.data.data.length === 0) {
@@ -74,6 +74,8 @@ const NewsSearch = () => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);
         } else {
+          // TODO: 토큰 유효성, 재요청
+          // ,,,,,
           setError({
             code: 500,
             message: response.data.data?.reason || "스크랩 중 오류 발생",
@@ -117,17 +119,16 @@ const NewsSearch = () => {
             <div key={index} className="news-card">
               <div className="news-card-text">
                 <h2>
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
                     "{item.title}"
                   </a>
                 </h2>
                 <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
               </div>
-              <button className="scrap-button" onClick={() => handleScrap(item)}>
+              <button
+                className="scrap-button"
+                onClick={() => handleScrap(item)}
+              >
                 스크랩
               </button>
             </div>
