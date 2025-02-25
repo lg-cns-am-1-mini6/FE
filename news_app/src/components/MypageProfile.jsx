@@ -3,6 +3,7 @@ import "./MypageProfile.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 import axios from "axios";
+import { handleApiResponse } from "./apiCommon"; // 공통 로직 import
 
 export default function MypageProfile() {
   const { userInfo } = useContext(UserContext);
@@ -11,6 +12,7 @@ export default function MypageProfile() {
   const [image, setImage] = useState(null);
   const [email, setEmail] = useState(userInfo.email);
   const accesstoken = localStorage.getItem("accesstoken");
+
   // 로그인 여부 체크
   useEffect(() => {
     if (!accesstoken) {
@@ -21,7 +23,7 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
-  }, []);
+  }, [accesstoken]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -30,7 +32,7 @@ export default function MypageProfile() {
       console.log(URL.createObjectURL(file));
       setImage(URL.createObjectURL(file));
     } else {
-      console.log("??");
+      console.log("파일 선택 오류");
     }
   };
 
@@ -44,19 +46,10 @@ export default function MypageProfile() {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.success) {
-          // 성공 시
-          console.log(res.data.data.message);
-        } else if (res.data.status == 401) {
-          // 토큰 만료 시
-          axios
-            .post(`/auth/reissue`, null, { withCredentials: true })
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
-        }
+        console.log("응답 데이터:", res.data);
+        handleApiResponse(res); // 공통 로직으로 처리
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("요청 에러:", err));
   };
 
   useEffect(() => {
@@ -93,14 +86,14 @@ export default function MypageProfile() {
               <input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-              ></input>
+              />
             </div>
             <span>e-mail</span>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            ></input>
+            />
           </div>
           <div>
             <label htmlFor="fileInput" className="profile-button">
