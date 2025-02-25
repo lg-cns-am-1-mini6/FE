@@ -65,3 +65,21 @@
   color: var(--main-color);
   font-family: "Gowun Dodum", serif;
 }
+
+.search-hashtags {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.8rem 0;
+  color: var(--main-color);
+}
+
+.like-btn {
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+
+  background-color: var(--light-2-color);
+  color: navy;
+}
