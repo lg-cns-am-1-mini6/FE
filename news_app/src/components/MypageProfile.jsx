@@ -1,37 +1,25 @@
 import { useState, useEffect, useContext } from "react";
 import "./MypageProfile.css";
 import { UserContext } from "./UserContext";
+import ErrorPopup from "./Error";
 
 export default function MypageProfile() {
   const { userInfo } = useContext(UserContext);
+  const [error, setError] = useState(null);
   const [username, setUsername] = useState(userInfo.username);
   const [email, setEmail] = useState(userInfo.email);
 
-  // // mock data에서 현재 사용자의 프로필 정보를 가져오는 함수
-  // const fetchProfileData = () => {
-  //   fetch("/result_mock.json")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const currentUser = data.members.find(
-  //         (member) => member.id === currentUserId
-  //       );
-  //       if (currentUser) {
-  //         setUsername(currentUser.username);
-  //         setEmail(currentUser.user_email);
-  //         // image가 null이 아닌 경우에만 설정 (null이면 기본 이미지 등 처리 가능)
-  //         if (currentUser.image) {
-  //           setImage(currentUser.image);
-  //         }
-  //       }
-  //     })
-  //     .catch((err) =>
-  //       console.error("프로필 데이터를 불러오는 중 오류 발생:", err)
-  //     );
-  // };
-
-  // useEffect(() => {
-  //   fetchProfileData();
-  // }, []);
+  // 로그인 여부 체크
+  useEffect(() => {
+    if (!userInfo.username) {
+      setError({
+        code: 404,
+        message: "로그인 해주세요",
+        redirect: true,
+        redirectUrl: "/login",
+      });
+    }
+  }, [userInfo.username]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -105,6 +93,16 @@ export default function MypageProfile() {
           </div>
         </div>
       </div>
+      {/* 오류 팝업 */}
+      {error && (
+        <ErrorPopup
+          code={error.code}
+          message={error.message}
+          onClose={() => setError(null)}
+          redirect={error.redirect}
+          redirectUrl={error.redirectUrl}
+        />
+      )}
     </>
   );
 }

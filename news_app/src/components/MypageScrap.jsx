@@ -25,6 +25,7 @@ function ScrapCard({ articleId, title, content, link, onDelete }) {
 
 export default function MypageScrap() {
   const { userInfo } = useContext(UserContext);
+  const currentUserId = userInfo.username;
   const [newslist, setNewslist] = useState([]);
   const [error, setError] = useState(null); // 오류 상태
   const navigate = useNavigate();
@@ -32,6 +33,18 @@ export default function MypageScrap() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  // 로그인 여부 체크 후, 로그인하지 않았다면 오류 팝업 노출
+  useEffect(() => {
+    if (!userInfo.username) {
+      setError({
+        code: 404,
+        message: "로그인 해주세요",
+        redirect: true,
+        redirectUrl: "/login",
+      });
+    }
+  }, [userInfo.username]);
 
   const fetchScrapData = () => {
     const token = localStorage.getItem("accessToken");

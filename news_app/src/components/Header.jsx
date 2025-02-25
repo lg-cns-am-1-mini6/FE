@@ -48,17 +48,17 @@ const Header = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <li>
-              <Link to={userInfo.username ? "/MypageProfile" : "/login"}>
+              <Link to="/MypageProfile">
                 내 정보
               </Link>
             </li>
             <li>
-              <Link to={userInfo.username ? "/MypageKeyword" : "/login"}>
+              <Link to="/MypageKeyword">
                 관심 주제
               </Link>
             </li>
             <li>
-              <Link to={userInfo.username ? "/MypageScrap" : "/login"}>
+              <Link to="/MypageScrap">
                 스크랩한 뉴스
               </Link>
             </li>

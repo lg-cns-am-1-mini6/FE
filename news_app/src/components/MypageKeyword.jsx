@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./MypageKeyword.css";
+import { UserContext } from "./UserContext";
+import ErrorPopup from "./Error";
 
 function KeywordItem({ keyword, onDelete }) {
   const displayWord =
@@ -13,6 +15,8 @@ function KeywordItem({ keyword, onDelete }) {
 }
 
 export default function MypageKeyword() {
+  const { userInfo } = useContext(UserContext);
+  const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
@@ -20,6 +24,18 @@ export default function MypageKeyword() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  // 로그인 여부 체크
+  useEffect(() => {
+    if (!userInfo.username) {
+      setError({
+        code: 404,
+        message: "로그인 해주세요",
+        redirect: true,
+        redirectUrl: "/login",
+      });
+    }
+  }, [userInfo.username]);
 
   // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
   const currentUserId = "member1";
@@ -108,34 +124,45 @@ export default function MypageKeyword() {
       <div className="keyword-box">
         {/* 키워드 추가 입력창 */}
         <div>
-        <div className="keyword-add">
-          <input
-            type="text"
-            placeholder="추가하실 키워드를 입력하세요"
-            value={newKeyword}
-            onChange={(e) => setNewKeyword(e.target.value)}
-          />
-          <button onClick={addKeyword}>+</button>
-        </div>
-        {keywords.length === 0 && (
-          <div className="no_contents">등록된 관심 키워드가 없습니다</div>
-        )}
-        {keywords.length > 0 && (
-          <div className="keyword-keywords">
-            {keywords.map((keyword, index) => (
-              <KeywordItem
-                key={index}
-                keyword={keyword}
-                onDelete={() => deleteKeyword(index)}
-              />
-            ))}
+          <div className="keyword-add">
+            <input
+              type="text"
+              placeholder="추가하실 키워드를 입력하세요"
+              value={newKeyword}
+              onChange={(e) => setNewKeyword(e.target.value)}
+            />
+            <button onClick={addKeyword}>+</button>
           </div>
-        )}</div>
+          {keywords.length === 0 && (
+            <div className="no_contents">등록된 관심 키워드가 없습니다</div>
+          )}
+          {keywords.length > 0 && (
+            <div className="keyword-keywords">
+              {keywords.map((keyword, index) => (
+                <KeywordItem
+                  key={index}
+                  keyword={keyword}
+                  onDelete={() => deleteKeyword(index)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
         <div className="keyword-buttons">
           <button onClick={resetKeywords}>원래대로</button>
           <button onClick={saveChanges}>저장</button>
         </div>
       </div>
+      {/* 오류 팝업 */}
+      {error && (
+        <ErrorPopup
+          code={error.code}
+          message={error.message}
+          onClose={() => setError(null)}
+          redirect={error.redirect}
+          redirectUrl={error.redirectUrl}
+        />
+      )}
     </>
   );
 }
