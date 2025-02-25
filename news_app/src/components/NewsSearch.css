@@ -101,12 +101,13 @@
 }
 
 .scrap-button {
+  width: 100px;
   background-color: var(--light-2-color);
   color: navy;
   border: none;
   border-radius: 1rem;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .scrap-button:hover {
