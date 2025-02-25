@@ -83,8 +83,10 @@ const NewsSearch = () => {
       description: item.description,
       pubDate: item.pubDate,
     };
+    const accesstoken = localStorage.getItem("accesstoken");
+    console.log(payload);
     axios
-      .post("/articles/scrap", payload)
+      .post("/articles/scrap", payload , { headers: { Authorization: `Bearer ${accesstoken}` } })
       .then((response) => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);

@@ -5,7 +5,7 @@ import ErrorPopup from "./Error";
 import "./MypageScrap.css";
 import { UserContext } from "./UserContext";
 
-function ScrapCard({ articleId, title, content, link, onDelete }) {
+function ScrapCard({ newsId, title, content, link, onDelete }) {
   return (
     <div className="card-box">
       <div className="card-text">
@@ -16,7 +16,7 @@ function ScrapCard({ articleId, title, content, link, onDelete }) {
         </h2>
         <p>{content}</p>
       </div>
-      <button className="card-delete-btn" onClick={() => onDelete(articleId)}>
+      <button className="card-delete-btn" onClick={() => onDelete(newsId)}>
         X
       </button>
     </div>
@@ -27,7 +27,7 @@ export default function MypageScrap() {
   const { userInfo } = useContext(UserContext);
   const currentUserId = userInfo.username;
   const [newslist, setNewslist] = useState([]);
-  const [error, setError] = useState(null); // 오류 상태
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const accesstoken = localStorage.getItem("accesstoken");
 
@@ -35,7 +35,7 @@ export default function MypageScrap() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // 로그인 여부 체크 후, 로그인하지 않았다면 오류 팝업 노출
+  // 로그인 여부 체크
   useEffect(() => {
     if (!accesstoken) {
       setError({
@@ -48,25 +48,24 @@ export default function MypageScrap() {
   }, [accesstoken]);
 
   const fetchScrapData = () => {
-    const token = localStorage.getItem("accessToken");
     axios
-      .get("/newjeans.site/articles/scrap", {
+      .get("/articles/scrap", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accesstoken}`,
         },
       })
       .then((response) => {
         const data = response.data;
         if (data.success) {
-          setNewslist(data.data.articles);
-          if (data.data.articles.length === 0) {
+          // data.data가 바로 기사 배열입니다.
+          const articles = data.data || [];
+          setNewslist(articles);
+          if (articles.length === 0) {
             setError({ code: 404, message: "스크랩한 기사가 없습니다!" });
           }
         } else {
           if (data.code === 401) {
-            // TODO: 토큰 유효성, 재요청
-            // ,,,,,
             setError({ code: 401, message: "관리자 권한이 필요합니다." });
           } else if (data.code === 404 && data.data?.reason === "NotLoggedIn") {
             setError({
@@ -109,29 +108,27 @@ export default function MypageScrap() {
   };
 
   useEffect(() => {
-    // 지금은 하드코딩...
+    // 초기 값 설정 및 데이터 fetch
     setNewslist(userInfo.articles || []);
-    //fetchScrapData();
+    fetchScrapData();
   }, [userInfo.articles]);
 
-  const handleDelete = (articleId) => {
-    const token = localStorage.getItem("accessToken");
+  const handleDelete = (newsId) => {
     axios
-      .delete("/newjeans.site/articles/scrap", {
+      .delete(`/articles/scrap`, {
+        params: { newsId },
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accesstoken}`,
         },
-        data: { articleId },
       })
       .then((response) => {
         if (response.data.success) {
-          setNewslist(newslist.filter((item) => item.articleId !== articleId));
+          setNewslist(newslist.filter((item) => item.id !== newsId));
         } else {
           setError({
             code: 500,
-            message:
-              response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
+            message: response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
           });
           console.error("스크랩 삭제에 실패했습니다.");
         }
@@ -160,10 +157,10 @@ export default function MypageScrap() {
         {newslist.length > 0 ? (
           newslist.map((news) => (
             <ScrapCard
-              key={news.articleId}
-              articleId={news.articleId}
+              key={news.id}
+              newsId={news.id}
               title={news.title}
-              content={news.content}
+              content={news.description}
               link={news.link}
               onDelete={handleDelete}
             />
@@ -184,7 +181,6 @@ export default function MypageScrap() {
         </button>
       </div>
 
-      {/* 오류 팝업 */}
       {error && (
         <ErrorPopup
           code={error.code}
