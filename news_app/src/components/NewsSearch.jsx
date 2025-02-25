@@ -31,7 +31,7 @@ const NewsSearch = () => {
       return;
     }
     axios
-      .get("/article/search", { params: { query } })
+      .get("/articles/search", { params: { query } })
       .then((response) => {
         if (response.data.success) {
           if (response.data.data.length === 0) {
@@ -84,7 +84,7 @@ const NewsSearch = () => {
       pubDate: item.pubDate,
     };
     axios
-      .post("/newjeans.site/articles/scrap", payload)
+      .post("/articles/scrap", payload)
       .then((response) => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);
