@@ -9,8 +9,15 @@ export default function MypageProfile() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(userInfo.username);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(userInfo.imageUrl);
+  const [preview, setPreview] = useState(null);
+  const [file, setFile] = useState(null);
   const accesstoken = localStorage.getItem("accesstoken");
+
+  // 화면 맨 위로 올리기
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   // 로그인 여부 체크
   useEffect(() => {
@@ -22,73 +29,98 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
-
-    // 테스트용
-    getImageUrl();
   }, [accesstoken]);
+
+  // 이미지 변하면...
+  useEffect(() => {
+    //console.log(file);
+    //console.log("이미지 URL", image);
+  }, [image]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      console.log(typeof file);
-      setImage(URL.createObjectURL(file));
+      const file0 = e.target.files[0];
+      const fileUrl = URL.createObjectURL(file0);
+      setFile(file0);
+      setPreview(fileUrl);
     } else {
       console.log("파일 선택 오류");
     }
   };
 
-  const getImageUrl = () => {
-    axios
-      .post(
-        `/image/presigned-url`,
-        { imageName: userInfo.email },
-        {
-          headers: { Authorization: `Bearer ${accesstoken}` },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log("presigned Url: ", res.data.data.imageUrl);
-        // 위에꺼 정상적으로 왔으면
-        // 이미지 보내기...
-        // const imageData = image;
-        // axios
-        //   .put(res.data.data.imageUrl, imageData)
-        //   .then((res) => console.log(res))
-        //   .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  };
-
   const handleSave = () => {
     console.log("변경사항 저장");
-    const userData = { name: username, imageUrl: image };
-    console.log(userData);
-    axios
-      .patch(`/user`, userData, {
-        headers: { Authorization: `Bearer ${accesstoken}` },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log("응답 데이터:", res.data);
-        if (res.data.success) {
-          console.log(
-            `변경사항 전송 완료: ${res.data.data.email}, ${res.data.data.name}, ${res.data.data.imageUrl}`
-          );
-          setUserInfo({
-            username: res.data.data.name,
-            imageUrl: res.data.data.imageUrl,
-          });
-        } else if (res.data.status == 401) {
-          reissueToken(res);
-        }
-      })
-      .catch((err) => console.log("요청 에러:", err));
-  };
+    let uploadPromise = Promise.resolve(image);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+    // 이미지 s3에 저장하기...
+    if (file) {
+      console.log("파일 업로드 시도 중");
+      uploadPromise = axios
+        .post(
+          `/image/presigned-url`,
+          { imageName: userInfo.email },
+          {
+            headers: { Authorization: `Bearer ${accesstoken}` },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success) {
+            const presigned = res.data.data.imageUrl;
+            const parsed = presigned.split("?")[0];
+            console.log("pre-signed url: ", presigned);
+
+            return axios
+              .put(presigned, file, {
+                headers: {
+                  "Content-Type": "application/octet-stream",
+                },
+              })
+              .then(() => parsed);
+          } else if (res.data.status == 401) {
+            reissueToken(res);
+          } else {
+            console.log("알 수 없는 오류: presigned-url로의 요청 실패 ");
+          }
+        })
+        .then((parsed) => {
+          console.log("parsed:", parsed);
+          setImage(parsed);
+          setPreview(null);
+          return parsed;
+        })
+        .catch((err) => {
+          console.log("파일 업로드 실패", err);
+          return image; // 실패 시 기존 이미지 유지하기
+        });
+    }
+
+    uploadPromise.then((updatedImageUrl) => {
+      const userData = { name: username, imageUrl: updatedImageUrl };
+      console.log("유저 정보 업데이트:", { userData });
+      axios
+        .patch(`/user`, userData, {
+          headers: { Authorization: `Bearer ${accesstoken}` },
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.success) {
+            console.log(
+              `변경사항 전송 완료: ${res.data.data.email}, ${res.data.data.name}, ${res.data.data.imageUrl}`
+            );
+            setUserInfo({
+              email: res.data.data.email,
+              username: res.data.data.name,
+              imageUrl: res.data.data.imageUrl,
+            });
+          } else if (res.data.status == 401) {
+            reissueToken(res);
+          }
+        })
+        .catch((err) => console.log(err));
+    });
+  };
 
   return (
     <>
@@ -107,9 +139,7 @@ export default function MypageProfile() {
           <div
             className="profile-image"
             style={{
-              backgroundImage: userInfo.image
-                ? `url(${userInfo.imageUrl})`
-                : "none",
+              backgroundImage: `url(${preview || image})`,
             }}
           ></div>
         </div>

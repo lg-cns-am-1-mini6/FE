@@ -32,10 +32,9 @@ export default function LoginHandler() {
             console.log("응답 데이터:", res.data);
             if (res.data.success) {
               setUserInfo({
-                username: res.data.data.name
-                  ? res.data.data.name
-                  : res.data.data.email,
+                username: res.data.data.name,
                 email: res.data.data.email,
+                imageUrl: res.data.data.imageUrl,
               });
             } else {
               reissueToken()
