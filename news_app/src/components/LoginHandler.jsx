@@ -47,7 +47,6 @@ export default function LoginHandler() {
           });
 
         // 일단 하드코딩...
-        setUserInfo({ username: "test-account" });
 
         nav("/");
       })

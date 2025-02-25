@@ -12,18 +12,27 @@ import LoginHandler from "./components/LoginHandler.jsx";
 import { UserContext } from "./components/UserContext.jsx";
 import { useEffect, useState } from "react";
 import LogoutHandler from "./components/LogoutHandler.jsx";
+import axios from "axios";
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ name: null });
+  const [userInfo, setUserInfo] = useState({ username: null });
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") !== null) {
+    const accesstoken = localStorage.getItem("accesstoken");
+    if (accesstoken !== null) {
       // TODO: 액세스 토큰으로 유저 정보 가져오기
-
-      // 일단은 mock data 활용
-      fetch("/scrap_mock.json")
-        .then((res) => res.json())
-        .then((data) => setUserInfo(data.data));
+      axios
+        .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
+        .then((res) => {
+          console.log(res.data.data);
+          setUserInfo({
+            username: res.data.data.email,
+            email: res.data.data.email,
+          });
+        })
+        .catch((err) => {
+          console.log("유저 정보 조회 실패", err);
+        });
     }
   }, []);
 

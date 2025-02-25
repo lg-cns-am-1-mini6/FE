@@ -9,16 +9,17 @@ export default function LogoutHandler() {
   useEffect(() => {
     // 테스트 때문에 밖으로 뺌
     setUserInfo({ name: null });
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("accesstoken");
     nav("/");
 
     axios
-      .post(`http://localhost:8080/auth/sign-out`)
+      .post(`/auth/sign-out`)
       .then((res) => {
         console.log(res.data.message);
         // 로그아웃 후 해야 할 일...
         setUserInfo({ name: null });
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("accesstoken");
+        // 리프레시 토큰 (쿠키) 삭제
         nav("/");
       })
       .catch((err) => {
