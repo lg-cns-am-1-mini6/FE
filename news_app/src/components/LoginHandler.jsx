@@ -21,30 +21,43 @@ export default function LoginHandler() {
     }
     console.log(`POST 요청 URL : /auth/${domain}/sign-in?code=${code}`);
     axios
-      .post(`/auth/${domain}/sign-in?code=${code}`, null, {
-        withCredentials: true,
-      })
+      .post(`/auth/${domain}/sign-in?code=${code}`, { withCredentials: true })
       .then((res) => {
         const accesstoken = res.headers.accesstoken;
         localStorage.setItem("accesstoken", accesstoken);
+
         axios
           .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
           .then((res) => {
+            console.log("응답 데이터:", res.data);
             if (res.data.success) {
               setUserInfo({
-                username: res.data.data.name,
+                username: res.data.data.name
+                  ? res.data.data.name
+                  : res.data.data.email,
                 email: res.data.data.email,
-                imageUrl: res.data.data.imageUrl,
               });
-            } else if (res.data.status == 401) {
-              reissueToken(res);
             } else {
-              console.log("알 수 없는 오류");
-              console.log(res);
+              reissueToken()
+                .then((newRes) => {
+                  console.log("재발급 후 처리:", newRes);
+                })
+                .catch((err) => {
+                  console.error("토큰 재발급 실패:", err);
+                });
             }
           })
           .catch((err) => {
             console.log("유저 정보 조회 실패", err);
+            if (err.response && err.response.status === 401) {
+              reissueToken()
+                .then((newRes) => {
+                  console.log("재발급 후 처리:", newRes);
+                })
+                .catch((err) => {
+                  console.error("토큰 재발급 실패:", err);
+                });
+            }
           });
 
         nav("/");

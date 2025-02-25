@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import LogoutHandler from "./components/LogoutHandler.jsx";
 import axios from "axios";
 import Admin from "./components/Admin.jsx";
+import { reissueToken } from "./components/apiCommon.js";
 
 function App() {
   const [userInfo, setUserInfo] = useState({ username: null });
@@ -24,14 +25,37 @@ function App() {
       axios
         .get(`/user`, { headers: { Authorization: `Bearer ${accesstoken}` } })
         .then((res) => {
-          setUserInfo({
-            username: res.data.data.name,
-            email: res.data.data.email,
-            imageUrl: res.data.data.imageUrl,
-          });
+          console.log("응답 데이터:", res.data);
+          if (res.data.success) {
+            setUserInfo({
+              username: res.data.data.name
+                ? res.data.data.name
+                : res.data.data.email,
+              email: res.data.data.email,
+            });
+          } else {
+            // 응답은 왔으나 success가 false인 경우 토큰 재발급 시도
+            reissueToken()
+              .then((newRes) => {
+                console.log("재발급 후 처리:", newRes);
+                // 필요시 원래 요청 재시도 로직 추가 가능
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          }
         })
         .catch((err) => {
-          console.log("유저 정보 조회 실패", err);
+          console.log("유저 정보 조회 실패:", err);
+          if (err.response && err.response.status === 401) {
+            reissueToken()
+              .then((newRes) => {
+                console.log("재발급 후 처리:", newRes);
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          }
         });
     }
   }, []);
@@ -58,7 +82,7 @@ function App() {
             <Route path="/login/oauth2/code/test" element={<LoginHandler />} />
             <Route path="/logout" element={<LogoutHandler />} />
             <Route path="/admin" element={<Admin />} />
-            {/* 에러 페이지 : 잘못된 경로도 포함해야 */}
+            {/* 에러 페이지 등 추가 */}
           </Routes>
           <Footer />
         </div>

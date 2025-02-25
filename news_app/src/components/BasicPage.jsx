@@ -36,7 +36,7 @@ export default function BasicPage() {
     // 로그인한 경우: 백엔드에서 뉴스 기사 데이터를 받아와 페이지 내에 카드뉴스로 표시
     if (userInfo.username) {
       axios
-        .get("/article/search", { params: { query } })
+        .get("/article/search", { params: { query } }) //API는 나중에 다른걸로 수정
         .then((response) => {
           if (response.data.success) {
             if (response.data.data.length === 0) {

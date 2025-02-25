@@ -23,10 +23,7 @@ export default function MypageProfile() {
         redirectUrl: "/login",
       });
     }
-
-    // 로그인 되어있으면 imageUrl이 있는지 확인 후 이미지 보여줌
-    if (!userInfo.imageUrl) {
-    }
+    // 추가: 로그인 되어있으면 imageUrl이 있는지 확인 후 처리 (필요시)
   }, [accesstoken]);
 
   const handleImageChange = (e) => {
@@ -41,7 +38,6 @@ export default function MypageProfile() {
 
   const handleSave = () => {
     console.log("변경사항 저장");
-    // 여기에 서버로 변경사항을 전송하는 로직 추가 가능
     const userData = { username: username, email: email };
     axios
       .post(`/user`, userData, {
@@ -51,12 +47,32 @@ export default function MypageProfile() {
       .then((res) => {
         console.log("응답 데이터:", res.data);
         if (res.data.success) {
-          // ...
-        } else if (res.data.status == 401) {
-          reissueToken(res);
+          // 성공 처리 (필요시 추가 로직 구현)
+          console.log("업데이트 성공!");
+        } else if (res.data.status === 401) {
+          // 토큰 만료 시 재발급 후 후속 처리
+          reissueToken()
+            .then((newRes) => {
+              console.log("재발급 후 처리:", newRes);
+              // 원래 요청을 재시도하거나, 사용자에게 알림 처리 가능
+            })
+            .catch((err) => {
+              console.error("토큰 재발급 실패:", err);
+            });
         }
       })
-      .catch((err) => console.log("요청 에러:", err));
+      .catch((err) => {
+        console.log("요청 에러:", err);
+        if (err.response && err.response.status === 401) {
+          reissueToken()
+            .then((newRes) => {
+              console.log("재발급 후 처리:", newRes);
+            })
+            .catch((err) => {
+              console.error("토큰 재발급 실패:", err);
+            });
+        }
+      });
   };
 
   useEffect(() => {

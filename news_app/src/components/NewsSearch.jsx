@@ -4,12 +4,11 @@ import Header from "./Header";
 import axios from "axios";
 import ErrorPopup from "./Error";
 import "./NewsSearch.css";
+import { reissueToken } from "./apiCommon";
 
 const NewsSearch = () => {
-  // URL 쿼리스트링에서 query 값을 읽어옴
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get("query") || "";
-
   const [news, setNews] = useState([]);
   const [query, setQuery] = useState(initialQuery);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,12 +19,10 @@ const NewsSearch = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // 페이지가 로드될 때 URL에 query가 있다면 자동으로 검색 실행
   useEffect(() => {
     if (initialQuery.trim() !== "") {
       handleSearch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialQuery]);
 
   const handleSearch = () => {
@@ -45,14 +42,32 @@ const NewsSearch = () => {
             console.log("검색어:", query);
           }
         } else {
-          setError({
-            code: 500,
-            message: response.data.data?.reason || "서버 오류",
-          });
+          if (response.data.code === 401) {
+            reissueToken()
+              .then((newRes) => {
+                console.log("재발급 후 처리:", newRes);
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          } else {
+            setError({
+              code: 500,
+              message: response.data.data?.reason || "서버 오류",
+            });
+          }
         }
       })
       .catch((err) => {
-        if (err.response && err.response.status === 500) {
+        if (err.response && err.response.status === 401) {
+          reissueToken()
+            .then((newRes) => {
+              console.log("재발급 후 처리:", newRes);
+            })
+            .catch((err) => {
+              console.error("토큰 재발급 실패:", err);
+            });
+        } else if (err.response && err.response.status === 500) {
           setError({ code: 500, message: "서버 오류" });
         } else {
           setError({ code: 500, message: "알 수 없는 오류가 발생했습니다." });
@@ -74,25 +89,42 @@ const NewsSearch = () => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);
         } else {
-          // TODO: 토큰 유효성, 재요청
-          // ,,,,,
-          setError({
-            code: 500,
-            message: response.data.data?.reason || "스크랩 중 오류 발생",
-          });
-          console.error(
-            "Scrap error:",
-            response.data.data?.reason || "알 수 없는 오류"
-          );
+          if (response.data.code === 401) {
+            reissueToken()
+              .then((newRes) => {
+                console.log("재발급 후 처리:", newRes);
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          } else {
+            setError({
+              code: 500,
+              message:
+                response.data.data?.reason || "스크랩 중 오류 발생",
+            });
+            console.error(
+              "Scrap error:",
+              response.data.data?.reason || "알 수 없는 오류"
+            );
+          }
         }
       })
       .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          reissueToken()
+            .then((newRes) => {
+              console.log("재발급 후 처리:", newRes);
+            })
+            .catch((err) => {
+              console.error("토큰 재발급 실패:", err);
+            });
+        }
         setError({ code: 500, message: "스크랩 중 오류 발생" });
         console.error("Error scrapping article:", err);
       });
   };
 
-  // 페이징 로직
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
