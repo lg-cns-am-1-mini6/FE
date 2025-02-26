@@ -48,7 +48,7 @@ const NewsSearch = () => {
     }
 
     if (accesstoken) {
-      console.log("서치 - 유저가 함");
+      //console.log("서치 - 유저가 함");
       axios
         .get("https://newjeans.site/articles/search", {
           params: { query },
@@ -62,13 +62,13 @@ const NewsSearch = () => {
             } else {
               setNews(response.data.data);
               setCurrentPage(1);
-              console.log("검색어:", query);
+              //console.log("검색어:", query);
             }
           } else {
             if (response.data.code === 401) {
               reissueToken()
                 .then((newRes) => {
-                  console.log("재발급 후 처리:", newRes);
+                  //console.log("재발급 후 처리:", newRes);
                 })
                 .catch((err) => {
                   console.error("토큰 재발급 실패:", err);
@@ -85,7 +85,7 @@ const NewsSearch = () => {
           if (err.response && err.response.status === 401) {
             reissueToken()
               .then((newRes) => {
-                console.log("재발급 후 처리:", newRes);
+                //console.log("재발급 후 처리:", newRes);
               })
               .catch((err) => {
                 console.error("토큰 재발급 실패:", err);
@@ -98,7 +98,7 @@ const NewsSearch = () => {
           console.error("Error loading search results:", err);
         });
     } else {
-      console.log("서치 - 유저 아님");
+      //console.log("서치 - 유저 아님");
       axios
         .get("https://newjeans.site/articles/search", { params: { query } })
         .then((response) => {
@@ -108,13 +108,13 @@ const NewsSearch = () => {
             } else {
               setNews(response.data.data);
               setCurrentPage(1);
-              console.log("검색어:", query);
+              //console.log("검색어:", query);
             }
           } else {
             if (response.data.code === 401) {
               reissueToken()
                 .then((newRes) => {
-                  console.log("재발급 후 처리:", newRes);
+                  //console.log("재발급 후 처리:", newRes);
                 })
                 .catch((err) => {
                   console.error("토큰 재발급 실패:", err);
@@ -131,7 +131,7 @@ const NewsSearch = () => {
           if (err.response && err.response.status === 401) {
             reissueToken()
               .then((newRes) => {
-                console.log("재발급 후 처리:", newRes);
+                //console.log("재발급 후 처리:", newRes);
               })
               .catch((err) => {
                 console.error("토큰 재발급 실패:", err);
@@ -153,20 +153,28 @@ const NewsSearch = () => {
       description: item.description,
       pubDate: item.pubDate,
     };
-    console.log(payload);
+    if (!accesstoken) {
+      setError({
+        code: 404,
+        message: "로그인 해주세요",
+        redirect: true,
+        redirectUrl: "/login",
+      });
+      return;
+    }
     axios
       .post("/articles/scrap", payload, {
         headers: { Authorization: `Bearer ${accesstoken}` },
       })
       .then((response) => {
         if (response.data.success) {
-          console.log("Scrap success:", response.data);
+          //console.log("Scrap success:", response.data);
           setSuccess(true);
         } else {
           if (response.data.code === 401) {
             reissueToken()
               .then((newRes) => {
-                console.log("재발급 후 처리:", newRes);
+                //console.log("재발급 후 처리:", newRes);
               })
               .catch((err) => {
                 console.error("토큰 재발급 실패:", err);
@@ -187,7 +195,7 @@ const NewsSearch = () => {
         if (err.response && err.response.status === 401) {
           reissueToken()
             .then((newRes) => {
-              console.log("재발급 후 처리:", newRes);
+              //console.log("재발급 후 처리:", newRes);
             })
             .catch((err) => {
               console.error("토큰 재발급 실패:", err);
