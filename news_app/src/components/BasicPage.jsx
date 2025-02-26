@@ -50,7 +50,7 @@ export default function BasicPage() {
             const articles = response.data.data.reduce((acc, curr) => {
               return acc.concat(curr.articles);
             }, []);
-            
+
             if (articles.length === 0) {
               // 등록된 키워드가 없는 경우
               setNoKeywords(true);
@@ -102,12 +102,6 @@ export default function BasicPage() {
     const totalPages = Math.ceil(newsList.length / 10);
     const nextPage = (currentPage + 1) % totalPages; // 마지막 페이지 이후에는 처음으로
     setCurrentPage(nextPage);
-  };
-
-  // "마음에 들어요" 버튼 (추가 기능 구현 가능)
-  const handleLike = () => {
-    console.log("사용자가 현재 추천 뉴스를 마음에 들어합니다.");
-    // 예: 긍정 피드백 API 호출 등을 구현할 수 있음
   };
 
   // 스크랩 기능: 뉴스 기사 스크랩 API 호출
@@ -193,11 +187,8 @@ export default function BasicPage() {
                   {/* 추천 뉴스 상단에 피드백 버튼 그룹 */}
                   <div className="search-hashtags">
                     <span>#추천 뉴스 어때요?</span>
-                    <button className="like-btn" onClick={handleLike}>
-                      ✔️ 마음에 들어요
-                    </button>
                     <button className="like-btn" onClick={handleNextPage}>
-                      ❌ 다시 추천해주세요
+                      🔄 다시 추천!
                     </button>
                   </div>
                   {/* 카드뉴스 형식의 추천 뉴스 리스트 */}
