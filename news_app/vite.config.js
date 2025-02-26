@@ -9,9 +9,16 @@ export default defineConfig({
       // "/api": "https://newjeans.site",
       "/auth": "https://newjeans.site",
       "/user": "https://newjeans.site",
-      "/article": "https://newjeans.site",
+      "/articles": "https://newjeans.site",
       "/image": "https://newjeans.site",
       "/keywords": "https://newjeans.site",
+
+      // "/auth": "http://localhost:8080",
+      // "/user": "http://localhost:8080",
+      // "/articles": "http://localhost:8080",
+      // "/image": "http://localhost:8080",
+      // "/keywords": "http://localhost:8080",
+      
     }
   }
 })

@@ -3,6 +3,20 @@ import { useNavigate } from "react-router-dom";
 import "./BasicPage.css";
 import ErrorPopup from "./Error";
 import axios from "axios";
+import { reissueToken } from "./apiCommon"; // 토큰 재발급 관련 유틸 (필요 시)
+
+function SuccessPopup({ message, onClose }) {
+  return (
+    <div className="success-overlay">
+      <div className="success-popup">
+        <p>{message}</p>
+        <div className="success-buttons">
+          <button onClick={onClose}>확인</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function BasicPage() {
   const [query, setQuery] = useState("");
@@ -10,6 +24,7 @@ export default function BasicPage() {
   const [currentPage, setCurrentPage] = useState(0); // 0-indexed 페이지 번호
   const [error, setError] = useState(null);
   const [noKeywords, setNoKeywords] = useState(false); // 키워드 없음 여부
+  const [success, setSuccess] = useState(false); // 스크랩 성공 팝업
   const navigate = useNavigate();
   const accesstoken = localStorage.getItem("accesstoken");
 
@@ -22,15 +37,26 @@ export default function BasicPage() {
   useEffect(() => {
     if (accesstoken) {
       axios
-        .get("/article/recommend")
+        .get("/articles/key-search", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        })
         .then((response) => {
           if (response.data.success) {
-            if (response.data.data.length === 0) {
-              // 에러 팝업 대신 화면에 "등록된 키워드가 없습니다." 메시지 표시
+            // 응답 데이터는 JSON 형식으로, data 배열 안에 각 키워드별 articles가 있음
+            // 모든 articles를 하나의 배열로 합침
+            const articles = response.data.data.reduce((acc, curr) => {
+              return acc.concat(curr.articles);
+            }, []);
+            
+            if (articles.length === 0) {
+              // 등록된 키워드가 없는 경우
               setNoKeywords(true);
             } else {
               // Fisher-Yates 알고리즘으로 배열 섞기
-              const shuffled = shuffleArray(response.data.data);
+              const shuffled = shuffleArray(articles);
               setNewsList(shuffled);
               setCurrentPage(0);
             }
@@ -62,7 +88,7 @@ export default function BasicPage() {
     return newArr;
   };
 
-  // 검색어 입력 시 무조건 NewsSearch 페이지로 리다이렉션
+  // 검색어 입력 시 NewsSearch 페이지로 리다이렉션
   const handleSearch = () => {
     if (query.trim() === "") {
       setError({ code: 400, message: "검색어를 입력해주세요!" });
@@ -82,6 +108,59 @@ export default function BasicPage() {
   const handleLike = () => {
     console.log("사용자가 현재 추천 뉴스를 마음에 들어합니다.");
     // 예: 긍정 피드백 API 호출 등을 구현할 수 있음
+  };
+
+  // 스크랩 기능: 뉴스 기사 스크랩 API 호출
+  const handleScrap = (item) => {
+    const payload = {
+      title: item.title,
+      link: item.link,
+      description: item.description,
+      pubDate: item.pubDate,
+    };
+    const accesstoken = localStorage.getItem("accesstoken");
+    axios
+      .post("/articles/scrap", payload, {
+        headers: { Authorization: `Bearer ${accesstoken}` },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Scrap success:", response.data);
+          setSuccess(true);
+        } else {
+          if (response.data.code === 401) {
+            reissueToken()
+              .then((newRes) => {
+                console.log("토큰 재발급 후 처리:", newRes);
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          } else {
+            setError({
+              code: 500,
+              message: response.data.data?.reason || "스크랩 중 오류 발생",
+            });
+            console.error(
+              "Scrap error:",
+              response.data.data?.reason || "알 수 없는 오류"
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          reissueToken()
+            .then((newRes) => {
+              console.log("토큰 재발급 후 처리:", newRes);
+            })
+            .catch((err) => {
+              console.error("토큰 재발급 실패:", err);
+            });
+        }
+        setError({ code: 500, message: "이미 스크랩한 기사입니다!" });
+        console.error("Error scrapping article:", err);
+      });
   };
 
   // 현재 페이지에 해당하는 10개의 뉴스 기사
@@ -140,12 +219,11 @@ export default function BasicPage() {
                               __html: item.description,
                             }}
                           />
+                          <p className="pub-date">{item.pubDate}</p>
                         </div>
                         <button
                           className="scrap-button"
-                          onClick={() => {
-                            // 필요 시 스크랩 기능 구현
-                          }}
+                          onClick={() => handleScrap(item)}
                         >
                           스크랩
                         </button>
@@ -170,6 +248,13 @@ export default function BasicPage() {
           code={error.code}
           message={error.message}
           onClose={() => setError(null)}
+        />
+      )}
+      {/* 성공 팝업: 스크랩 성공 시 표시 */}
+      {success && (
+        <SuccessPopup
+          message="스크랩 되었습니다!"
+          onClose={() => setSuccess(false)}
         />
       )}
     </div>
