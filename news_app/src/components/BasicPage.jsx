@@ -45,17 +45,13 @@ export default function BasicPage() {
         })
         .then((response) => {
           if (response.data.success) {
-            // 응답 데이터는 JSON 형식으로, data 배열 안에 각 키워드별 articles가 있음
-            // 모든 articles를 하나의 배열로 합침
-            const articles = response.data.data.reduce((acc, curr) => {
-              return acc.concat(curr.articles);
-            }, []);
-
-            if (articles.length === 0) {
-              // 등록된 키워드가 없는 경우
+            if (response.data.data == "추천할 검색어 없음.") {
               setNoKeywords(true);
             } else {
               // Fisher-Yates 알고리즘으로 배열 섞기
+              const articles = response.data.data.reduce((acc, curr) => {
+                return acc.concat(curr.articles);
+              }, []);
               const shuffled = shuffleArray(articles);
               setNewsList(shuffled);
               setCurrentPage(0);
@@ -71,7 +67,7 @@ export default function BasicPage() {
           if (err.response && err.response.status === 500) {
             setError({ code: 500, message: "서버 오류" });
           } else {
-            setError({ code: 500, message: "키워드를 불러올 수 없음" });
+            // setError({ code: 500, message: "키워드를 불러올 수 없음" });
           }
           console.error("Error loading recommended news:", err);
         });
@@ -180,7 +176,9 @@ export default function BasicPage() {
           <>
             {noKeywords ? (
               // 등록된 키워드가 없을 경우 안내 메시지 표시
-              <div className="no-keywords">등록된 키워드가 없습니다.</div>
+              <div className="no-keywords">
+                ✨ 검색 기록이 쌓이면, 딱 맞는 키워드를 추천해줄게요! ✨
+              </div>
             ) : (
               newsList.length > 0 && (
                 <>

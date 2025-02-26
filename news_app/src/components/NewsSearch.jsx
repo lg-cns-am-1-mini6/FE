@@ -29,6 +29,7 @@ const NewsSearch = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false); // 성공 팝업을 위한 state
   const articlesPerPage = 10;
+  const accesstoken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -45,19 +46,43 @@ const NewsSearch = () => {
       setError({ code: 400, message: "검색어를 입력해주세요!" });
       return;
     }
-    axios
-      .get("/articles/search", { params: { query } })
-      .then((response) => {
-        if (response.data.success) {
-          if (response.data.data.length === 0) {
-            setError({ code: 404, message: "검색된 기사가 없습니다." });
+
+    if (accesstoken) {
+      console.log("서치 - 유저가 함");
+      axios
+        .get("https://newjeans.site/articles/search", {
+          params: { query },
+          headers: { Authorization: `Bearer ${accesstoken}` },
+          withCredentials: true,
+        })
+        .then((response) => {
+          if (response.data.success) {
+            if (response.data.data.length === 0) {
+              setError({ code: 404, message: "검색된 기사가 없습니다." });
+            } else {
+              setNews(response.data.data);
+              setCurrentPage(1);
+              console.log("검색어:", query);
+            }
           } else {
-            setNews(response.data.data);
-            setCurrentPage(1);
-            console.log("검색어:", query);
+            if (response.data.code === 401) {
+              reissueToken()
+                .then((newRes) => {
+                  console.log("재발급 후 처리:", newRes);
+                })
+                .catch((err) => {
+                  console.error("토큰 재발급 실패:", err);
+                });
+            } else {
+              setError({
+                code: 500,
+                message: response.data.data?.reason || "서버 오류",
+              });
+            }
           }
-        } else {
-          if (response.data.code === 401) {
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
             reissueToken()
               .then((newRes) => {
                 console.log("재발급 후 처리:", newRes);
@@ -65,30 +90,60 @@ const NewsSearch = () => {
               .catch((err) => {
                 console.error("토큰 재발급 실패:", err);
               });
+          } else if (err.response && err.response.status === 500) {
+            setError({ code: 500, message: "서버 오류" });
           } else {
-            setError({
-              code: 500,
-              message: response.data.data?.reason || "서버 오류",
-            });
+            setError({ code: 500, message: "알 수 없는 오류가 발생했습니다." });
           }
-        }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          reissueToken()
-            .then((newRes) => {
-              console.log("재발급 후 처리:", newRes);
-            })
-            .catch((err) => {
-              console.error("토큰 재발급 실패:", err);
-            });
-        } else if (err.response && err.response.status === 500) {
-          setError({ code: 500, message: "서버 오류" });
-        } else {
-          setError({ code: 500, message: "알 수 없는 오류가 발생했습니다." });
-        }
-        console.error("Error loading search results:", err);
-      });
+          console.error("Error loading search results:", err);
+        });
+    } else {
+      console.log("서치 - 유저 아님");
+      axios
+        .get("https://newjeans.site/articles/search", { params: { query } })
+        .then((response) => {
+          if (response.data.success) {
+            if (response.data.data.length === 0) {
+              setError({ code: 404, message: "검색된 기사가 없습니다." });
+            } else {
+              setNews(response.data.data);
+              setCurrentPage(1);
+              console.log("검색어:", query);
+            }
+          } else {
+            if (response.data.code === 401) {
+              reissueToken()
+                .then((newRes) => {
+                  console.log("재발급 후 처리:", newRes);
+                })
+                .catch((err) => {
+                  console.error("토큰 재발급 실패:", err);
+                });
+            } else {
+              setError({
+                code: 500,
+                message: response.data.data?.reason || "서버 오류",
+              });
+            }
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
+            reissueToken()
+              .then((newRes) => {
+                console.log("재발급 후 처리:", newRes);
+              })
+              .catch((err) => {
+                console.error("토큰 재발급 실패:", err);
+              });
+          } else if (err.response && err.response.status === 500) {
+            setError({ code: 500, message: "서버 오류" });
+          } else {
+            setError({ code: 500, message: "알 수 없는 오류가 발생했습니다." });
+          }
+          console.error("Error loading search results:", err);
+        });
+    }
   };
 
   const handleScrap = (item) => {
@@ -98,7 +153,6 @@ const NewsSearch = () => {
       description: item.description,
       pubDate: item.pubDate,
     };
-    const accesstoken = localStorage.getItem("accesstoken");
     console.log(payload);
     axios
       .post("/articles/scrap", payload, {
@@ -174,9 +228,7 @@ const NewsSearch = () => {
                     "{item.title}"
                   </a>
                 </h2>
-                <p
-                  dangerouslySetInnerHTML={{ __html: item.description }}
-                ></p>
+                <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
               </div>
               <button
                 className="scrap-button"

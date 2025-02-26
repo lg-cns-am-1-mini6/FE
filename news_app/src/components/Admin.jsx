@@ -1,3 +1,5 @@
+import "./Admin.css";
+
 export default function Admin() {
   return (
     <>
@@ -7,16 +9,10 @@ export default function Admin() {
       <br />
       <div className="text-art">
         <span className="horizonalBar"></span>
-        <h3>검색어 순위</h3>
+        <h3 style={{ color: "red" }}>유저 블랙리스트 관리</h3>
         <span className="horizonalBar"></span>
       </div>
-      <div className="admin-container">아무튼 뭔 내용</div>
-      <div className="text-art">
-        <span className="horizonalBar"></span>
-        <h3>유저별 통계</h3>
-        <span className="horizonalBar"></span>
-      </div>
-      <div className="admin-container">우와아ㅏ</div>
+      <div className="admin-container">준비 중입니다.</div>
     </>
   );
 }

@@ -1,0 +1,9 @@
+.admin-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-container div:first-child {
+  width: 25rem;
+  background-color: red;
+}
