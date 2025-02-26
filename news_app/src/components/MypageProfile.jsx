@@ -36,13 +36,7 @@ export default function MypageProfile() {
     }
   }, [accesstoken]);
 
-  // 이미지 변하면...
-  useEffect(() => {
-    //console.log(file);
-    //console.log("이미지 URL", image);
-  }, [image]);
-
-  // 마운트 될 때 한 번
+  // 마운트 될 때 스크랩한 수 가져오기
   useEffect(() => {
     axios
       .get("/articles/scrap", {
@@ -53,9 +47,8 @@ export default function MypageProfile() {
       })
       .then((response) => {
         if (response.data.success) {
-          // 성공시
           setScrapLength(response.data.data.length);
-        } else if (response.data.status == 401) {
+        } else if (response.data.status === 401) {
           reissueToken(response);
         } else {
           console.log("알 수 없는 오류");
@@ -67,10 +60,6 @@ export default function MypageProfile() {
   const downloadProfile = async () => {
     if (!captureRef.current) return;
     console.log("다운로드 버튼 클릭");
-
-    document.querySelectorAll(".profile-button").forEach((btn) => {
-      btn.style.display = "none";
-    });
 
     const replaceInputsWithDivs = () => {
       document.querySelectorAll(".profile-content input").forEach((input) => {
@@ -132,7 +121,7 @@ export default function MypageProfile() {
     console.log("변경사항 저장");
     let uploadPromise = Promise.resolve(image);
 
-    // 이미지 s3에 저장하기...
+    // 이미지 S3에 저장하기
     if (file) {
       console.log("파일 업로드 시도 중");
       uploadPromise = axios
@@ -157,10 +146,10 @@ export default function MypageProfile() {
                 },
               })
               .then(() => parsed);
-          } else if (res.data.status == 401) {
+          } else if (res.data.status === 401) {
             reissueToken(res);
           } else {
-            console.log("알 수 없는 오류: presigned-url로의 요청 실패 ");
+            console.log("알 수 없는 오류: presigned-url 요청 실패");
           }
         })
         .then((parsed) => {
@@ -171,7 +160,7 @@ export default function MypageProfile() {
         })
         .catch((err) => {
           console.log("파일 업로드 실패", err);
-          return image; // 실패 시 기존 이미지 유지하기
+          return image; // 실패 시 기존 이미지 유지
         });
     }
 
@@ -194,7 +183,7 @@ export default function MypageProfile() {
               username: res.data.data.name,
               imageUrl: res.data.data.imageUrl,
             });
-          } else if (res.data.status == 401) {
+          } else if (res.data.status === 401) {
             reissueToken(res);
           }
         })
@@ -236,18 +225,11 @@ export default function MypageProfile() {
               <span>e-mail</span>
               <input readOnly type="email" value={userInfo.email} />
             </div>
-            <div>
-              <span>스크랩한 수</span>{" "}
-              <span
-                style={{
-                  color: "var(--main-color)",
-                }}
-              >
-                {scrapLength}
-              </span>
-            </div>
+            <span>스크랩한 수</span>{" "}
+            <span style={{ color: "var(--main-color)" }}>
+              {scrapLength}
+            </span>
           </div>
-
           <div>
             <label htmlFor="fileInput" className="profile-button">
               사진 업로드
@@ -264,7 +246,6 @@ export default function MypageProfile() {
           </div>
         </div>
       </div>
-
       <div>
         <button className="profile-download" onClick={downloadProfile}>
           내 프로필 다운로드

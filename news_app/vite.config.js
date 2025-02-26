@@ -11,6 +11,7 @@ export default defineConfig({
       "/user": "https://newjeans.site",
       "/article": "https://newjeans.site",
       "/image": "https://newjeans.site",
+      "/keywords": "https://newjeans.site",
     }
   }
 })
