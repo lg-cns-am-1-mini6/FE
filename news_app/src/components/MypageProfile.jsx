@@ -5,7 +5,6 @@ import ErrorPopup from "./Error";
 import axios from "axios";
 import { reissueToken } from "./apiCommon"; // 공통 로직 import
 import html2canvas from "html2canvas";
-import { useNavigate } from "react-router-dom";
 
 export default function MypageProfile() {
   const { userInfo, setUserInfo } = useContext(UserContext);

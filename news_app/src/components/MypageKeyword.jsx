@@ -3,9 +3,6 @@ import "./MypageKeyword.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 
-// accesstoken을 상단에서 정의
-const accesstoken = localStorage.getItem("accesstoken");
-
 function KeywordItem({ keyword, onDelete }) {
   if (!keyword || typeof keyword.keyword !== "string") return null;
   const displayWord =
@@ -25,6 +22,7 @@ export default function MypageKeyword() {
   const [error, setError] = useState(null);
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
+  const accesstoken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -40,7 +38,7 @@ export default function MypageKeyword() {
         redirectUrl: "/login",
       });
     }
-  }, []);
+  }, [accesstoken]);
 
   // 백엔드 API를 통해 키워드 조회 (GET /keywords/)
   const fetchKeywords = async () => {
@@ -85,10 +83,9 @@ export default function MypageKeyword() {
         if (!response.ok) {
           throw new Error("키워드 추가 실패");
         }
-        // 백엔드에서 새로 생성된 키워드 객체를 아래와 같이 반환한다고 가정:
-        // { success: true, status: 200, data: { id: <id>, keyword: <keyword>, ... } }
         const createdKeywordResponse = await response.json();
-        const newKeywordObject = createdKeywordResponse.data;
+        // 백엔드 응답 데이터에서 새로 생성된 키워드 객체(tag)를 추출합니다.
+        const newKeywordObject = createdKeywordResponse.data.tag;
         setKeywords([...keywords, newKeywordObject]);
         setNewKeyword("");
       } catch (error) {
