@@ -1,0 +1,70 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loginbox {
+  padding: 2rem;
+  border-radius: 2rem;
+  text-align: center;
+  justify-self: center;
+  width: 500px;
+  padding: 2.5rem 2rem;
+  margin: 0 auto;
+}
+
+.text-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.mypage-header p {
+  font-family: "Gowun Dodum", serif;
+  font-size: 1.125rem;
+}
+
+.horizonalBar {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-buttons button {
+  width: 80%;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  font-family: "Gowun Dodum", serif;
+}
+
+.login-buttons button:first-child {
+  background-color: #fee500;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-buttons button:last-child {
+  background-color: #fff;
+  color: #4285f4;
+  border: 1px solid #ccc;
+}

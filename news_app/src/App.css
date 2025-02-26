@@ -1,0 +1,24 @@
+.app-contents {
+  min-height: 100vh;
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-bg-color);
+
+  font-family: "Gowun Dodum", serif;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: "Gowun Dodum", serif;
+  font-size: 1.25rem;
+}

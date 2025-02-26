@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "status": 200,
+  "data": [
+    {
+      "title": "첫 번째 뉴스 제목",
+      "link": "https://example.com/article1",
+      "description": "첫 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-24"
+    },
+    {
+      "title": "두 번째 뉴스 제목",
+      "link": "https://example.com/article2",
+      "description": "두 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-23"
+    },
+    {
+      "title": "세 번째 뉴스 제목",
+      "link": "https://example.com/article3",
+      "description": "세 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-22"
+    },
+    {
+      "title": "네 번째 뉴스 제목",
+      "link": "https://example.com/article4",
+      "description": "네 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-21"
+    },
+    {
+      "title": "다섯 번째 뉴스 제목",
+      "link": "https://example.com/article5",
+      "description": "다섯 번째 뉴스의 요약 설명입니다.",
+      "pubDate": "2025-02-20"
+    }
+  ],
+  "timestamp": "2024-02-18T12:00:00+09:00"
+}

@@ -1,0 +1,30 @@
+{
+    "success": true,
+    "status": 200,
+    "data": {
+      "username": "팜하니",
+      "email": "pamhani@example.com",
+      "image": "https://pbs.twimg.com/profile_images/1760542028079960064/5mcyLkwY_400x400.jpg",
+      "articles": [
+        {
+          "articleId": "a1",
+          "title": "스크랩한 첫 번째 뉴스",
+          "link": "https://example.com/scrap1",
+          "content": "스크랩한 첫 번째 뉴스 기사 내용입니다."
+        },
+        {
+          "articleId": "a2",
+          "title": "스크랩한 두 번째 뉴스",
+          "link": "https://example.com/scrap2",
+          "content": "스크랩한 두 번째 뉴스 기사 내용입니다."
+        },
+        {
+          "articleId": "a3",
+          "title": "스크랩한 세 번째 뉴스",
+          "link": "https://example.com/scrap3",
+          "content": "스크랩한 세 번째 뉴스 기사 내용입니다."
+        }
+      ]
+    }
+  }
+  

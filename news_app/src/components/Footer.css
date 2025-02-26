@@ -1,0 +1,26 @@
+.footer-body {
+  bottom: 0;
+  width: 100%;
+  margin-top: auto;
+  background-color: var(--main-color);
+}
+
+.admin-container {
+  height: 10rem;
+  align-self: center;
+  width: 65%;
+}
+
+.footer-contents {
+  justify-self: center;
+}
+
+.admin-link a:active,
+.admin-link a:visited,
+.admin-link a:link {
+  color: var(--main-color);
+}
+
+.admin-link a:hover {
+  color: white;
+}

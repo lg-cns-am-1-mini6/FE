@@ -1,0 +1,87 @@
+.basic-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100vw;
+}
+
+.news-container {
+  min-width: 100vw;
+  text-align: center;
+  margin-top: 10rem;
+}
+
+.basic-title {
+  font-family: "Michroma", serif;
+  font-size: 3rem;
+  color: var(--main-color);
+  margin-bottom: 0;
+}
+
+.basic-title span {
+  color: var(--light-color);
+}
+
+.basic-hashtags {
+  margin: 5px 0;
+  color: gray;
+  font-size: 1rem;
+}
+
+.basic-hashtags p {
+  margin: 0.25rem;
+}
+
+.search-box {
+  margin: 1rem auto;
+  height: 1.8rem;
+  width: 60rem;
+  max-width: 50%;
+  background-color: var(--light-2-color);
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  padding-left: 1rem;
+  outline: none;
+  color: var(--main-color);
+}
+
+.search-box button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.search-box input::placeholder {
+  color: var(--main-color);
+  font-family: "Gowun Dodum", serif;
+}
+
+.search-hashtags {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.8rem 0;
+  color: var(--main-color);
+}
+
+.like-btn {
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--light-2-color);
+  color: navy;
+}
