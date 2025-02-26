@@ -16,7 +16,8 @@
 }
 
 .admin-link a:active,
-.admin-link a:visited {
+.admin-link a:visited,
+.admin-link a:link {
   color: var(--main-color);
 }
 
