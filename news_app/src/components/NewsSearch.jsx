@@ -139,7 +139,7 @@ const NewsSearch = () => {
               console.error("토큰 재발급 실패:", err);
             });
         }
-        setError({ code: 500, message: "스크랩 중 오류 발생" });
+        setError({ code: 500, message: "이미 스크랩한 기사입니다!" });
         console.error("Error scrapping article:", err);
       });
   };
