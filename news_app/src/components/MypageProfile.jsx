@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import "./MypageProfile.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
@@ -13,6 +13,8 @@ export default function MypageProfile() {
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const accesstoken = localStorage.getItem("accesstoken");
+  const [scrapLength, setScrapLength] = useState("로딩중");
+  const captureRef = useRef(null);
 
   // 화면 맨 위로 올리기
   useEffect(() => {
@@ -37,6 +39,47 @@ export default function MypageProfile() {
     //console.log("이미지 URL", image);
   }, [image]);
 
+  // 마운트 될 때 한 번
+  useEffect(() => {
+    axios
+      .get("/articles/scrap", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          // 성공시
+          setScrapLength(response.data.data.length);
+        } else if (response.data.status == 401) {
+          reissueToken(response);
+        } else {
+          console.log("알 수 없는 오류");
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  // 다운로드!
+  const downloadProfile = () => {
+    if (!captureRef.current) return;
+    console.log("다운로드 버튼 클릭");
+    html2canvas(captureRef.current, { useCORS: true })
+      .then((canvas) => {
+        if (!(canvas instanceof HTMLCanvasElement)) {
+          console.error("html2canvas가 캔버스를 반환하지 않음", canvas);
+          return;
+        }
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "captured-image.png";
+        link.click();
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file0 = e.target.files[0];
@@ -58,7 +101,7 @@ export default function MypageProfile() {
       uploadPromise = axios
         .post(
           `/image/presigned-url`,
-          { imageName: "ASDF" },
+          { imageName: userInfo.email.replace(".", "") },
           {
             headers: { Authorization: `Bearer ${accesstoken}` },
             withCredentials: true,
@@ -134,7 +177,7 @@ export default function MypageProfile() {
         <h3>개인정보 수정</h3>
         <span className="horizonalBar"></span>
       </div>
-      <div className="profile-container">
+      <div className="profile-container" ref={captureRef}>
         <div className="profile-image-area">
           <div
             className="profile-image"
@@ -152,9 +195,20 @@ export default function MypageProfile() {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <span>e-mail</span>
-            <input readOnly type="email" value={userInfo.email} />
+            <div>
+              <span>e-mail</span>
+              <input readOnly type="email" value={userInfo.email} />
+            </div>
+            <span>스크랩한 수</span>{" "}
+            <span
+              style={{
+                color: "var(--main-color)",
+              }}
+            >
+              {scrapLength}
+            </span>
           </div>
+
           <div>
             <label htmlFor="fileInput" className="profile-button">
               사진 업로드
@@ -170,6 +224,12 @@ export default function MypageProfile() {
             </button>
           </div>
         </div>
+      </div>
+
+      <div>
+        <button className="profile-download" onClick={downloadProfile}>
+          내 프로필 다운로드
+        </button>
       </div>
       {/* 오류 팝업 */}
       {error && (

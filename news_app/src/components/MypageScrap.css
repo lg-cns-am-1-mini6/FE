@@ -118,7 +118,7 @@
   cursor: pointer;
 }
 
-.scrap-buttons button:first-child {
+.scrap-buttons button {
   background-color: var(--light-2-color);
   color: navy;
 }

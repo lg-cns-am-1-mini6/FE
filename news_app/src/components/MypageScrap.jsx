@@ -4,6 +4,7 @@ import axios from "axios";
 import ErrorPopup from "./Error";
 import "./MypageScrap.css";
 import { UserContext } from "./UserContext";
+import { reissueToken } from "./apiCommon";
 
 function ScrapCard({ newsId, title, content, link, onDelete }) {
   return (
@@ -66,7 +67,8 @@ export default function MypageScrap() {
           }
         } else {
           if (data.code === 401) {
-            setError({ code: 401, message: "관리자 권한이 필요합니다." });
+            reissueToken(response);
+            //setError({ code: 401, message: "로그인 토큰 만료" });
           } else if (data.code === 404 && data.data?.reason === "NotLoggedIn") {
             setError({
               code: 404,
@@ -128,7 +130,8 @@ export default function MypageScrap() {
         } else {
           setError({
             code: 500,
-            message: response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
+            message:
+              response.data.data?.reason || "스크랩 삭제에 실패했습니다.",
           });
           console.error("스크랩 삭제에 실패했습니다.");
         }
