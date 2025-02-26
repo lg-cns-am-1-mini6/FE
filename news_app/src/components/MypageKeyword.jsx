@@ -3,9 +3,15 @@ import "./MypageKeyword.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 
+// accesstoken을 상단에서 정의
+const accesstoken = localStorage.getItem("accesstoken");
+
 function KeywordItem({ keyword, onDelete }) {
+  if (!keyword || typeof keyword.keyword !== "string") return null;
   const displayWord =
-    keyword.length >= 10 ? keyword.slice(0, 10) + "..." : keyword;
+    keyword.keyword.length >= 10
+      ? keyword.keyword.slice(0, 10) + "..."
+      : keyword.keyword;
   return (
     <div className="keyword-item">
       <span>{displayWord}</span>
@@ -17,10 +23,8 @@ function KeywordItem({ keyword, onDelete }) {
 export default function MypageKeyword() {
   const { userInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
-  const [username, setUsername] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
-  const accesstoken = localStorage.getItem("accesstoken");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -36,80 +40,85 @@ export default function MypageKeyword() {
         redirectUrl: "/login",
       });
     }
-  }, [accesstoken]);
-
-  // 현재 로그인한 사용자의 id (추후 인증 로직에 따라 변경 가능)
-  const currentUserId = "member1";
-
-  // mock 데이터에서 사용자 정보와 키워드를 가져오는 함수
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/result_mock.json"); // mock 데이터 경로
-        const data = await response.json();
-
-        // 예시로 첫 번째 멤버의 username을 사용
-        const member = data.members[0];
-        setUsername(member.username);
-
-        // 해당 멤버의 키워드 데이터를 가져옴
-        const memberKeywords = data.recommendedKeywords.find(
-          (kw) => kw.id === member.id
-        );
-        if (memberKeywords) {
-          setKeywords(memberKeywords.keyword);
-        }
-      } catch (error) {
-        console.error("Error fetching mock data:", error);
-      }
-    };
-
-    fetchData();
   }, []);
 
-  // 입력창에 값을 입력 후 + 버튼을 누르면 새 키워드 추가
-  const addKeyword = () => {
-    if (newKeyword.trim() !== "") {
-      setKeywords([...keywords, newKeyword.trim()]);
-      setNewKeyword("");
+  // 백엔드 API를 통해 키워드 조회 (GET /keywords/)
+  const fetchKeywords = async () => {
+    try {
+      const response = await fetch("/keywords/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("키워드 조회 실패");
+      }
+      const data = await response.json();
+      // 백엔드에서 반환된 데이터의 구조에 맞게 추출합니다.
+      setKeywords(data.data.tagList || []);
+    } catch (error) {
+      console.error("Error fetching keywords:", error);
+      setError({ code: 500, message: "키워드 로딩 실패" });
     }
   };
 
-  // 각 키워드 옆의 X 버튼 클릭 시 해당 키워드 삭제
-  const deleteKeyword = (index) => {
-    setKeywords(keywords.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    if (accesstoken) {
+      fetchKeywords();
+    }
+  }, [accesstoken]);
 
-  // 원래대로 버튼 클릭 시 초기 키워드 목록 복원
-  const resetKeywords = () => {
-    const fetchInitialKeywords = async () => {
+  // 키워드 추가 (POST /keywords/)
+  // request body: { "keyword": "입력값" }
+  const addKeyword = async () => {
+    if (newKeyword.trim() !== "") {
       try {
-        const response = await fetch("/path/to/result_mock.json"); // mock 데이터 경로
-        const data = await response.json();
-
-        // 예시로 첫 번째 멤버의 키워드 데이터를 가져옴
-        const member = data.members[0];
-        const memberKeywords = data.recommendedKeywords.find(
-          (kw) => kw.id === member.id
-        );
-        if (memberKeywords) {
-          setKeywords(memberKeywords.keyword);
+        const response = await fetch("/keywords/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          body: JSON.stringify({ keyword: newKeyword.trim() }),
+        });
+        if (!response.ok) {
+          throw new Error("키워드 추가 실패");
         }
+        // 백엔드에서 새로 생성된 키워드 객체를 아래와 같이 반환한다고 가정:
+        // { success: true, status: 200, data: { id: <id>, keyword: <keyword>, ... } }
+        const createdKeywordResponse = await response.json();
+        const newKeywordObject = createdKeywordResponse.data;
+        setKeywords([...keywords, newKeywordObject]);
+        setNewKeyword("");
       } catch (error) {
-        console.error("Error fetching initial keywords:", error);
+        console.error("Error adding keyword:", error);
+        setError({ code: 500, message: "키워드 추가 실패" });
       }
-    };
-
-    fetchInitialKeywords();
+    }
   };
 
-  // 수정사항 저장 버튼 클릭 시 변경된 키워드 목록을 서버 전송(여기서는 콘솔 출력)
-  const saveChanges = () => {
-    console.log("변경사항 저장:", keywords);
-    // 추후 서버 API 연동 구현
+  // 키워드 삭제 (DELETE /keywords/{id})
+  const deleteKeyword = async (id) => {
+    try {
+      const response = await fetch(`/keywords/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("키워드 삭제 실패");
+      }
+      setKeywords(keywords.filter((kw) => kw.id !== id));
+    } catch (error) {
+      console.error("Error deleting keyword:", error);
+      setError({ code: 500, message: "키워드 삭제 실패" });
+    }
   };
 
-  return (  
+  return (
     <>
       <header className="mypage-header">
         <h1>MY PAGE</h1>
@@ -123,7 +132,6 @@ export default function MypageKeyword() {
       </div>
 
       <div className="keyword-box">
-        {/* 키워드 추가 입력창 */}
         <div>
           <div className="keyword-add">
             <input
@@ -139,22 +147,17 @@ export default function MypageKeyword() {
           )}
           {keywords.length > 0 && (
             <div className="keyword-keywords">
-              {keywords.map((keyword, index) => (
+              {keywords.map((kw, index) => (
                 <KeywordItem
-                  key={index}
-                  keyword={keyword}
-                  onDelete={() => deleteKeyword(index)}
+                  key={kw.id || index}
+                  keyword={kw}
+                  onDelete={() => deleteKeyword(kw.id)}
                 />
               ))}
             </div>
           )}
         </div>
-        <div className="keyword-buttons">
-          <button onClick={resetKeywords}>원래대로</button>
-          <button onClick={saveChanges}>저장</button>
-        </div>
       </div>
-      {/* 오류 팝업 */}
       {error && (
         <ErrorPopup
           code={error.code}

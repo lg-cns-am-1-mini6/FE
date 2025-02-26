@@ -3,7 +3,9 @@ import "./MypageProfile.css";
 import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 import axios from "axios";
-import { reissueToken } from "./apiCommon"; // 공통 로직 import
+import { reissueToken } from "./apiCommon";
+// html2canvas 라이브러리 추가
+import html2canvas from "html2canvas";
 
 export default function MypageProfile() {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -33,13 +35,7 @@ export default function MypageProfile() {
     }
   }, [accesstoken]);
 
-  // 이미지 변하면...
-  useEffect(() => {
-    //console.log(file);
-    //console.log("이미지 URL", image);
-  }, [image]);
-
-  // 마운트 될 때 한 번
+  // 마운트 될 때 스크랩한 수 가져오기
   useEffect(() => {
     axios
       .get("/articles/scrap", {
@@ -50,9 +46,8 @@ export default function MypageProfile() {
       })
       .then((response) => {
         if (response.data.success) {
-          // 성공시
           setScrapLength(response.data.data.length);
-        } else if (response.data.status == 401) {
+        } else if (response.data.status === 401) {
           reissueToken(response);
         } else {
           console.log("알 수 없는 오류");
@@ -61,23 +56,22 @@ export default function MypageProfile() {
       .catch((err) => console.log(err));
   }, []);
 
-  // 다운로드!
+  // 프로필 영역 캡처 및 이미지 다운로드
   const downloadProfile = () => {
     if (!captureRef.current) return;
     console.log("다운로드 버튼 클릭");
     html2canvas(captureRef.current, { useCORS: true })
       .then((canvas) => {
-        if (!(canvas instanceof HTMLCanvasElement)) {
-          console.error("html2canvas가 캔버스를 반환하지 않음", canvas);
-          return;
-        }
-        const image = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = "captured-image.png";
-        link.click();
+        const imageData = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = imageData;
+        downloadLink.download = "profile-image.png";
+        // 링크를 DOM에 추가한 후 클릭하고 제거하여 다운로드 트리거
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error("프로필 이미지 캡처 오류:", err));
   };
 
   const handleImageChange = (e) => {
@@ -95,7 +89,7 @@ export default function MypageProfile() {
     console.log("변경사항 저장");
     let uploadPromise = Promise.resolve(image);
 
-    // 이미지 s3에 저장하기...
+    // 이미지 S3에 저장하기
     if (file) {
       console.log("파일 업로드 시도 중");
       uploadPromise = axios
@@ -120,10 +114,10 @@ export default function MypageProfile() {
                 },
               })
               .then(() => parsed);
-          } else if (res.data.status == 401) {
+          } else if (res.data.status === 401) {
             reissueToken(res);
           } else {
-            console.log("알 수 없는 오류: presigned-url로의 요청 실패 ");
+            console.log("알 수 없는 오류: presigned-url 요청 실패");
           }
         })
         .then((parsed) => {
@@ -134,7 +128,7 @@ export default function MypageProfile() {
         })
         .catch((err) => {
           console.log("파일 업로드 실패", err);
-          return image; // 실패 시 기존 이미지 유지하기
+          return image; // 실패 시 기존 이미지 유지
         });
     }
 
@@ -157,7 +151,7 @@ export default function MypageProfile() {
               username: res.data.data.name,
               imageUrl: res.data.data.imageUrl,
             });
-          } else if (res.data.status == 401) {
+          } else if (res.data.status === 401) {
             reissueToken(res);
           }
         })
@@ -177,6 +171,7 @@ export default function MypageProfile() {
         <h3>개인정보 수정</h3>
         <span className="horizonalBar"></span>
       </div>
+      {/* 캡처할 영역 */}
       <div className="profile-container" ref={captureRef}>
         <div className="profile-image-area">
           <div
@@ -200,15 +195,10 @@ export default function MypageProfile() {
               <input readOnly type="email" value={userInfo.email} />
             </div>
             <span>스크랩한 수</span>{" "}
-            <span
-              style={{
-                color: "var(--main-color)",
-              }}
-            >
+            <span style={{ color: "var(--main-color)" }}>
               {scrapLength}
             </span>
           </div>
-
           <div>
             <label htmlFor="fileInput" className="profile-button">
               사진 업로드
@@ -225,7 +215,6 @@ export default function MypageProfile() {
           </div>
         </div>
       </div>
-
       <div>
         <button className="profile-download" onClick={downloadProfile}>
           내 프로필 다운로드
