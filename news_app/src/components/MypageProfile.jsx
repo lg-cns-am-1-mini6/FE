@@ -4,6 +4,8 @@ import { UserContext } from "./UserContext";
 import ErrorPopup from "./Error";
 import axios from "axios";
 import { reissueToken } from "./apiCommon"; // 공통 로직 import
+import html2canvas from "html2canvas";
+import { useNavigate } from "react-router-dom";
 
 export default function MypageProfile() {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -15,6 +17,7 @@ export default function MypageProfile() {
   const accesstoken = localStorage.getItem("accesstoken");
   const [scrapLength, setScrapLength] = useState("로딩중");
   const captureRef = useRef(null);
+  const [renderKey, setRenderKey] = useState(0);
 
   // 화면 맨 위로 올리기
   useEffect(() => {
@@ -61,23 +64,53 @@ export default function MypageProfile() {
       .catch((err) => console.log(err));
   }, []);
 
-  // 다운로드!
-  const downloadProfile = () => {
+  const downloadProfile = async () => {
     if (!captureRef.current) return;
     console.log("다운로드 버튼 클릭");
-    html2canvas(captureRef.current, { useCORS: true })
-      .then((canvas) => {
-        if (!(canvas instanceof HTMLCanvasElement)) {
-          console.error("html2canvas가 캔버스를 반환하지 않음", canvas);
-          return;
-        }
-        const image = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = "captured-image.png";
-        link.click();
-      })
-      .catch((err) => console.log(err));
+
+    const replaceInputsWithDivs = () => {
+      document.querySelectorAll(".profile-content input").forEach((input) => {
+        const div = document.createElement("div");
+        div.textContent = input.value;
+        div.style.cssText = window.getComputedStyle(input).cssText;
+        div.style.borderBottom = "none";
+        div.style.padding = "5px 0";
+        div.style.display = "inline-block";
+        div.style.width = input.offsetWidth + "px";
+        div.style.color = "var(--main-color)";
+        div.style.marginLeft = "1rem";
+
+        input.dataset.prevElement = input.outerHTML; // 나중에 되돌리기 위해 저장
+        input.parentNode.replaceChild(div, input);
+      });
+    };
+
+    try {
+      replaceInputsWithDivs();
+      const canvas = await html2canvas(captureRef.current, {
+        useCORS: true,
+        scale: window.devicePixelRatio,
+        backgroundColor: null,
+        logging: false,
+        useClassList: true,
+      });
+
+      if (!(canvas instanceof HTMLCanvasElement)) {
+        console.error("html2canvas가 캔버스를 반환하지 않음", canvas);
+        return;
+      }
+
+      const image = canvas.toDataURL("image/png"); // 이미지 URL 변환
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "mypage-profile.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setRenderKey((prev) => prev + 1);
+    } catch (err) {
+      console.error("이미지 캡처 실패:", err);
+    }
   };
 
   const handleImageChange = (e) => {
@@ -177,7 +210,7 @@ export default function MypageProfile() {
         <h3>개인정보 수정</h3>
         <span className="horizonalBar"></span>
       </div>
-      <div className="profile-container" ref={captureRef}>
+      <div className="profile-container" ref={captureRef} key={renderKey}>
         <div className="profile-image-area">
           <div
             className="profile-image"
