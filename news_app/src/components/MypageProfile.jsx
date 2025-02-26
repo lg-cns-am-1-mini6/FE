@@ -15,7 +15,7 @@ export default function MypageProfile() {
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const accesstoken = localStorage.getItem("accesstoken");
-  const [scrapLength, setScrapLength] = useState("로딩중");
+  const [scrapLength, setScrapLength] = useState(0);
   const captureRef = useRef(null);
   const [renderKey, setRenderKey] = useState(0);
 
@@ -60,7 +60,9 @@ export default function MypageProfile() {
   const downloadProfile = async () => {
     if (!captureRef.current) return;
     console.log("다운로드 버튼 클릭");
-
+    document.querySelectorAll(".profile-button").forEach((btn) => {
+      btn.style.display = "none";
+    });
     const replaceInputsWithDivs = () => {
       document.querySelectorAll(".profile-content input").forEach((input) => {
         const div = document.createElement("div");
@@ -226,9 +228,7 @@ export default function MypageProfile() {
               <input readOnly type="email" value={userInfo.email} />
             </div>
             <span>스크랩한 수</span>{" "}
-            <span style={{ color: "var(--main-color)" }}>
-              {scrapLength}
-            </span>
+            <span style={{ color: "var(--main-color)" }}>{scrapLength}</span>
           </div>
           <div>
             <label htmlFor="fileInput" className="profile-button">
