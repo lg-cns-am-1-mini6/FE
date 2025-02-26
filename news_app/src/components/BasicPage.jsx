@@ -177,7 +177,7 @@ export default function BasicPage() {
             {noKeywords ? (
               // 등록된 키워드가 없을 경우 안내 메시지 표시
               <div className="no-keywords">
-                ✨ 검색 기록이 쌓이면, 딱 맞는 키워드를 추천해줄게요! ✨
+                ✨ 검색 기록이 쌓이면, 딱 맞는 뉴스를 추천해줄게요! ✨
               </div>
             ) : (
               newsList.length > 0 && (
