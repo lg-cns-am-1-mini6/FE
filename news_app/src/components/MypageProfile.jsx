@@ -68,6 +68,10 @@ export default function MypageProfile() {
     if (!captureRef.current) return;
     console.log("다운로드 버튼 클릭");
 
+    document.querySelectorAll(".profile-button").forEach((btn) => {
+      btn.style.display = "none";
+    });
+
     const replaceInputsWithDivs = () => {
       document.querySelectorAll(".profile-content input").forEach((input) => {
         const div = document.createElement("div");
@@ -232,14 +236,16 @@ export default function MypageProfile() {
               <span>e-mail</span>
               <input readOnly type="email" value={userInfo.email} />
             </div>
-            <span>스크랩한 수</span>{" "}
-            <span
-              style={{
-                color: "var(--main-color)",
-              }}
-            >
-              {scrapLength}
-            </span>
+            <div>
+              <span>스크랩한 수</span>{" "}
+              <span
+                style={{
+                  color: "var(--main-color)",
+                }}
+              >
+                {scrapLength}
+              </span>
+            </div>
           </div>
 
           <div>
