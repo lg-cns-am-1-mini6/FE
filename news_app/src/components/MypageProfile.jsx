@@ -58,7 +58,7 @@ export default function MypageProfile() {
       uploadPromise = axios
         .post(
           `/image/presigned-url`,
-          { imageName: userInfo.email },
+          { imageName: "ASDF" },
           {
             headers: { Authorization: `Bearer ${accesstoken}` },
             withCredentials: true,
@@ -146,7 +146,7 @@ export default function MypageProfile() {
         <div className="profile-info">
           <div className="profile-content">
             <div>
-              <span>유저ID</span>
+              <span>닉네임</span>
               <input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}

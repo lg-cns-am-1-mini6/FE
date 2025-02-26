@@ -28,10 +28,9 @@ function App() {
           console.log("응답 데이터:", res.data);
           if (res.data.success) {
             setUserInfo({
-              username: res.data.data.name
-                ? res.data.data.name
-                : res.data.data.email,
+              username: res.data.data.name,
               email: res.data.data.email,
+              imageUrl: res.data.data.imageUrl,
             });
           } else {
             // 응답은 왔으나 success가 false인 경우 토큰 재발급 시도
