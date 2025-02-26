@@ -9,6 +9,7 @@ export default function BasicPage() {
   const [newsList, setNewsList] = useState([]); // 추천 뉴스 전체 데이터
   const [currentPage, setCurrentPage] = useState(0); // 0-indexed 페이지 번호
   const [error, setError] = useState(null);
+  const [noKeywords, setNoKeywords] = useState(false); // 키워드 없음 여부
   const navigate = useNavigate();
   const accesstoken = localStorage.getItem("accesstoken");
 
@@ -25,7 +26,8 @@ export default function BasicPage() {
         .then((response) => {
           if (response.data.success) {
             if (response.data.data.length === 0) {
-              setError({ code: 404, message: "추천 뉴스를 찾을 수 없습니다." });
+              // 에러 팝업 대신 화면에 "등록된 키워드가 없습니다." 메시지 표시
+              setNoKeywords(true);
             } else {
               // Fisher-Yates 알고리즘으로 배열 섞기
               const shuffled = shuffleArray(response.data.data);
@@ -43,7 +45,7 @@ export default function BasicPage() {
           if (err.response && err.response.status === 500) {
             setError({ code: 500, message: "서버 오류" });
           } else {
-            setError({ code: 500, message: "알 수 없는 오류가 발생했습니다." });
+            setError({ code: 500, message: "키워드를 불러올 수 없음" });
           }
           console.error("Error loading recommended news:", err);
         });
@@ -103,50 +105,55 @@ export default function BasicPage() {
 
         {accesstoken ? (
           <>
-            {newsList.length > 0 && (
-              <>
-                {/* 추천 뉴스 상단에 피드백 버튼 그룹 */}
-                <div className="search-hashtags">
-                  <span>#추천 뉴스 어때요?</span>
-                  <button className="like-btn" onClick={handleLike}>
-                    ✔️ 마음에 들어요
-                  </button>
-                  <button className="like-btn" onClick={handleNextPage}>
-                    ❌ 다시 추천해주세요
-                  </button>
-                </div>
-                {/* 카드뉴스 형식의 추천 뉴스 리스트 */}
-                <div className="news-list">
-                  {displayedNews.map((item, index) => (
-                    <div key={index} className="news-card">
-                      <div className="news-card-text">
-                        <h2>
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {item.title}
-                          </a>
-                        </h2>
-                        <p
-                          dangerouslySetInnerHTML={{
-                            __html: item.description,
+            {noKeywords ? (
+              // 등록된 키워드가 없을 경우 안내 메시지 표시
+              <div className="no-keywords">등록된 키워드가 없습니다.</div>
+            ) : (
+              newsList.length > 0 && (
+                <>
+                  {/* 추천 뉴스 상단에 피드백 버튼 그룹 */}
+                  <div className="search-hashtags">
+                    <span>#추천 뉴스 어때요?</span>
+                    <button className="like-btn" onClick={handleLike}>
+                      ✔️ 마음에 들어요
+                    </button>
+                    <button className="like-btn" onClick={handleNextPage}>
+                      ❌ 다시 추천해주세요
+                    </button>
+                  </div>
+                  {/* 카드뉴스 형식의 추천 뉴스 리스트 */}
+                  <div className="news-list">
+                    {displayedNews.map((item, index) => (
+                      <div key={index} className="news-card">
+                        <div className="news-card-text">
+                          <h2>
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {item.title}
+                            </a>
+                          </h2>
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: item.description,
+                            }}
+                          />
+                        </div>
+                        <button
+                          className="scrap-button"
+                          onClick={() => {
+                            // 필요 시 스크랩 기능 구현
                           }}
-                        />
+                        >
+                          스크랩
+                        </button>
                       </div>
-                      <button
-                        className="scrap-button"
-                        onClick={() => {
-                          // 필요 시 스크랩 기능 구현
-                        }}
-                      >
-                        스크랩
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </>
+                    ))}
+                  </div>
+                </>
+              )
             )}
           </>
         ) : (
@@ -157,6 +164,7 @@ export default function BasicPage() {
           </div>
         )}
       </div>
+      {/* 에러 팝업: 실제 에러가 발생한 경우에만 표시 */}
       {error && (
         <ErrorPopup
           code={error.code}

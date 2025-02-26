@@ -6,6 +6,20 @@ import ErrorPopup from "./Error";
 import "./NewsSearch.css";
 import { reissueToken } from "./apiCommon";
 
+// 성공 팝업 컴포넌트 (에러팝업 CSS와 동일한 스타일 사용)
+function SuccessPopup({ message, onClose }) {
+  return (
+    <div className="success-overlay">
+      <div className="success-popup">
+        <p>{message}</p>
+        <div className="success-buttons">
+          <button onClick={onClose}>확인</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const NewsSearch = () => {
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get("query") || "";
@@ -13,6 +27,7 @@ const NewsSearch = () => {
   const [query, setQuery] = useState(initialQuery);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false); // 성공 팝업을 위한 state
   const articlesPerPage = 10;
 
   useEffect(() => {
@@ -86,10 +101,13 @@ const NewsSearch = () => {
     const accesstoken = localStorage.getItem("accesstoken");
     console.log(payload);
     axios
-      .post("/articles/scrap", payload , { headers: { Authorization: `Bearer ${accesstoken}` } })
+      .post("/articles/scrap", payload, {
+        headers: { Authorization: `Bearer ${accesstoken}` },
+      })
       .then((response) => {
         if (response.data.success) {
           console.log("Scrap success:", response.data);
+          setSuccess(true);
         } else {
           if (response.data.code === 401) {
             reissueToken()
@@ -102,8 +120,7 @@ const NewsSearch = () => {
           } else {
             setError({
               code: 500,
-              message:
-                response.data.data?.reason || "스크랩 중 오류 발생",
+              message: response.data.data?.reason || "스크랩 중 오류 발생",
             });
             console.error(
               "Scrap error:",
@@ -157,7 +174,9 @@ const NewsSearch = () => {
                     "{item.title}"
                   </a>
                 </h2>
-                <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                <p
+                  dangerouslySetInnerHTML={{ __html: item.description }}
+                ></p>
               </div>
               <button
                 className="scrap-button"
@@ -199,6 +218,12 @@ const NewsSearch = () => {
           code={error.code}
           message={error.message}
           onClose={() => setError(null)}
+        />
+      )}
+      {success && (
+        <SuccessPopup
+          message="스크랩 되었습니다!"
+          onClose={() => setSuccess(false)}
         />
       )}
     </>
