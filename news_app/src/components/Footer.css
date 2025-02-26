@@ -10,3 +10,16 @@
   align-self: center;
   width: 65%;
 }
+
+.footer-contents {
+  justify-self: center;
+}
+
+.admin-link a:active,
+.admin-link a:visited {
+  color: var(--main-color);
+}
+
+.admin-link a:hover {
+  color: white;
+}
